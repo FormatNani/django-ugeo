@@ -1,2 +1,4 @@
-data
+ugeo/data/*
 tests
+build
+ugeo.egg-info
