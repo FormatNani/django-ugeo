@@ -1,0 +1,9 @@
+{% load static %}
+<object type="application/x-shockwave-flash"  width={{width}} height={{height}} id={{div_name}} style="visibility:visible;display:none;z-index:0;">
+    <param name="menu" value="false">
+    <param name="quality" value="high">
+    <param name="movie" value="{% get_static_prefix %}xpano.swf" />
+    <param name="allowScriptAccess" value="always" />
+    <param name="allowfullscreen" value="true">
+    <param name="flashvars" value="xml=pano/init.xml">
+</object>

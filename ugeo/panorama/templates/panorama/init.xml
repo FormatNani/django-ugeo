@@ -1,0 +1,19 @@
+{% load static %}
+<?xml version="1.0" encoding="utf-8"?>
+<streetview>
+    {% if debug %}
+    <global debug="true">
+        <trace open="true"/>
+    </global>
+    <modules>
+        <ViewFinder path="{% get_static_prefix %}plugins/ViewFinder-1.0.swf" />
+        <DirectionFixer path="{% get_static_prefix %}plugins/DirectionFixer-1.0.swf"/>
+    </modules>
+    {% else %}
+    <global debug="false" />
+    {% endif %}
+    <streetview>
+        <settings navispots="{% get_static_prefix %}hotspots/NaviSpot-1.0.swf" hotspots="{% get_static_prefix %}hotspots/PoiSpot-1.0.swf" patchspots="{% get_static_prefix %}hotspots/PatchSpot-1.0.swf" camera="minVerticlaFov:-45" />
+        <resources url="/pano" />
+    </streetview>
+</streetview>

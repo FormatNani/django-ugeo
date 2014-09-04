@@ -1,0 +1,104 @@
+*{margin:0;padding:0;}
+html{width:100%;height:100%;overflow:hidden; font-size:13px;color:#000;}
+body{height:100%;overflow:hidden;background:#5D5F5E;font-family:微软雅黑;}
+.btn {
+    border: 1px solid green;
+    cursor:pointer;text-align:center;
+    display:inline-block;/*FF2.0*/-moz-display:inline-block;
+    font-family:Verdana;*font-family:Georgia;_font-family:Tahoma;
+    padding:0 10px 1px;*padding:3px 3px 1px;_padding:0 4px 1px;
+    line-height:18px;*line-height:14px;_line-height:16px;
+    height:19px;font-size:12px;
+}
+/*-------------head部分----------------*/
+/*head 主DIV*/
+.head {position:absolute;float:left;top:0;left:0;width:100%;height:212px;padding:0,0,0,0;background:url(../images/titlebg.jpg) repeat-x;}
+/*右上角功能菜单*/
+.topmenu{position:absolute; line-height:30px;text-align:right;top:5px; width:900px;right:3px;font-family:微软雅黑; font-size:9pt;color:#74A7E1;z-index:1;}
+.topmenu a{cursor:pointer;color:#3489DE;text-decoration:none;font-size:9pt;}
+.topmenu a:hover{color:#E66635;text-decoration:underline; font-size:12pt;}
+/*左侧的logo*/
+.logo{position:absolute;width:591px; height:67px; margin:0px 0 0 0px; top:0px;left:0px;background:url(../images/title.jpg) no-repeat;float:left;}
+/*-------------head部分 完毕----------------*/
+
+
+/*-------------left部分----------------*/
+/*left 主DIV*/
+.left{position:absolute;width:216px;background:#dafafc;top:67px;left:3px;height:auto!important;height:100%;border:1px solid #7f9db9;bottom:2px;}
+/*left 标题*/
+.left .title{width:216px; height:33px;position:absolute;top:0px;left:0px;z-index:1; background:url(../images/foot.jpg) repeat-x; margin-left:0px;line-height:33px;font-family:微软雅黑; font-size:12pt;color:#ffffff;font-weight:bold;text-indent:7px;}
+/*left 内容面板*/
+.left .contentDiv{position:absolute;width:216px;top:33px;vertical-align:top;text-indent:2px;font-size:12pt;font-family:Arial,宋体;color:#0a4c6f;}
+.left .contentDiv a{color:#666666;text-decoration:none;}
+.left .contentDiv a:hover{color:#0030e4;text-decoration:underline;}
+/*left 子标题*/
+.left .subtitle{position:relative;width:216px;height:23px;line-height:23px;top:5px;vertical-align:middle;text-indent:5pt;font-size:11pt;font-family:Arial,宋体; font-weight:normal;color:#000000;background:#3ca5d4;}
+/*-城市定位-*/
+.citydemo{ position:relative;left:5px;BORDER-BOTTOM: #b4eceb 8px solid; BORDER-LEFT: #b4eceb 8px solid; MARGIN-TOP: 8px; WIDTH:190px; BACKGROUND: #d9eff4; HEIGHT:108px; BORDER-TOP: #b4eceb 8px solid; BORDER-RIGHT: #b4eceb 8px solid;cursor:pointer;}
+.tt {BORDER-BOTTOM: #7fc6cc 1px solid; POSITION: relative; MARGIN: auto; WIDTH: 90%; HEIGHT: 30px; VERTICAL-ALIGN: middle;LINE-HEIGHT: 30px; FONT-SIZE: 14px; FONT-WEIGHT: bold}
+.tt IMG {MARGIN-TOP: 5px}
+.tt .lbcls{font-family:微软雅黑;color:#009933;font-weight:normal;}
+.tt .more {POSITION: absolute; LINE-HEIGHT: 20px; FONT-SIZE: 12px; TOP: 10px; RIGHT: 0px; FONT-WEIGHT: normal}
+.tt .more A{COLOR: #cc6600}
+.citydemo TABLE {LINE-HEIGHT: 20px; MARGIN: 5px auto auto; WIDTH:92%; COLOR: #666;text-align:left;font-family:Arial,宋体;font-size:12px;}
+.citydemo TABLE IMG {VERTICAL-ALIGN: top}
+.citydemo TABLE TD{PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; PADDING-TOP: 2px}
+.citydemo2{ position:relative;left:5px;BORDER-BOTTOM: #eeeeee 8px solid; BORDER-LEFT: #0a4c6f 8px solid; MARGIN-TOP: 8px; WIDTH:190px; BACKGROUND:#d9eff4; HEIGHT:108px; BORDER-TOP: #eeeeee 8px solid; BORDER-RIGHT: #0a4c6f 8px solid;cursor:pointer;}
+.citydemo2 TABLE {LINE-HEIGHT: 20px; MARGIN: 5px auto auto; WIDTH:92%; COLOR: #cc6600;text-align:left;font-family:Arial,宋体;font-size:12px;}
+.citydemo2 TABLE IMG {VERTICAL-ALIGN: top}
+.citydemo2 TABLE TD{PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; PADDING-TOP: 2px}
+/*-查询分析-*/
+.Lsearch {BACKGROUND: url(../images/divbottom.gif) #fff repeat-x center bottom; CURSOR: pointer;}
+/*-------------left部分 完毕----------------*/
+
+
+/*-------------中间部分----------------*/
+.hideResult,.hideResult2{ position:absolute;width:8px;top:67px;left:220px;float:left;height:auto!important;height:100%;bottom:33px;
+overflow:hidden;background:url(../images/s_hideResult.png) no-repeat center center;cursor:pointer;}
+.hideResult2{top:0px;bottom:0px;left:0px;background: url(../images/s_hideResult2.gif) no-repeat center center;z-index:58888;}
+/*-------------中间部分 完毕----------------*/
+
+
+/*-------------地图窗口部分 完毕----------------*/
+.contentPanel,.contentPanel2{position:absolute;top:67px;left:226px;right:2px;border:1px solid #7f9db9;bottom:2px;background:#ffffff;z-index:4;}
+.contentPanel2{left:8px;}
+.viewport,.viewport2,#viewportstreetview{ position:absolute;border:0px;z-index:1;top:28px;}
+.viewport2{top:3px; left:8px;bottom:0px;}
+#Toolbar {
+background: url(../images/bgtitle.png) repeat-x;
+background-position: 0 -51px;
+border-bottom: 1px solid #a6bee1;
+height: 28px;
+_height: 27px;
+left: 0;
+line-height: 28px;
+position: absolute;
+overflow: hidden;
+top: 0;
+white-space: nowrap;
+width: 100%;
+z-index: 100;
+}
+/*-------------地图窗口部分 完毕----------------*/
+
+.smallContentPanel{position:absolute; bottom:0px; right:0px;z-index:8000;width:225px;height:102px; background:#cccccc;border:2px solid #5D5F5E;}
+.smallviewport{position:absolute; z-index:1;width:100%;height:100%; background:#cccccc;}
+.smallToggleDiv{position:absolute; z-index:2;width:34px;height:16px;overflow:hidden;left:0px;top:0px;}
+.smallToggleDiv .dragDiv{position:absolute;left:0px;top:0px;width:18px;height:16px;overflow:hidden;
+    background:url(../images/overview_control.png) no-repeat;
+    background-position:0px 0px;}
+.smallToggleDiv .anchorDiv{position:absolute;left:18px;top:0px;width:16px;height:16px;overflow:hidden;
+    background:url(../images/overview_control.png) no-repeat;
+    background-position:-18px 0px;cursor:pointer;}
+	
+	
+.smallToggleDiv .anchorValid{background-position:-18px -16px;}
+.j-libs-control-toggle{position:absolute;float:right;right:0px;top:0px;z-index:99999;}
+
+
+.outputResult{overflow:scroll;position:absolute;left:226px;right:2px;height:220px;border:1px solid #7f9db9;bottom:34px;background-color:#A9D4F6;z-index:4;opacity:0.8;}
+
+/*-------------bottom部分 完毕----------------*/
+.bottom .state{ position:absolute;bottom:0px;left:0px;width:30%;height:33px;line-height:33px;border:none;background:url(../images/foot.jpg) repeat-x;z-index:5;font-size:13px;color:#fff;font-family:微软雅黑; font-size:9pt;}
+.bottom .danwei{position:absolute;bottom:0px;right:0px;height:33px;width:70%;float:right;line-height:33px;border:none;background:url(../images/foot.jpg) repeat-x;z-index:5;font-size:13px;color:#fff;font-family:微软雅黑; font-size:9pt;text-align:right;}
+/*-------------bottom部分 完毕----------------*/

@@ -1,0 +1,101 @@
+<html>
+<head>
+{% load static %}
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<TITLE>TOPCON StreetView</TITLE>
+<LINK rel="stylesheet" href="{% get_static_prefix %}css/app.css" type="text/css" />
+<link rel="stylesheet" href="{% get_static_prefix %}libs/leaflet.css" type="text/css">
+<!--[if lte IE 10]><link rel="stylesheet" href="{% get_static_prefix %}libs/leaflet2.css" /><![endif]-->
+<script type="text/javascript" src="{% get_static_prefix %}libs/leaflet.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}libs/toggleControl.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_divControl.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_src.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_smallView.js"></script>
+</head>
+<body onload="j_resize();j_init();">
+<!--头部_start-->
+<DIV id="mainTop" class="head">
+
+	<DIV class="logo"></DIV>
+</DIV>
+<!--头部_end-->
+
+<!--left_start-->
+<Div id="left" class="left" style="display:none;">
+	<DIV id="mainDivTitle" class="title">
+		城市定位
+	</DIV>
+
+	<!--城市定位面板-->
+	<DIV id="demoCities" class="contentDiv" style="display:solid;background:#3CA5D4;bottom:0px;">
+		<DIV class="citydemo" id="beijingDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('beijing')">
+			<DIV class=tt>
+				<label class="lbcls">SIGM集团园区</label>
+				<SPAN class=more>
+					<A href="javascript:void(0)">点击查看&gt;&gt;</A>
+				</SPAN>
+			</DIV>
+			<TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+				<TBODY>
+					<TR>
+						<TD vAlign=top><IMG src="{% get_static_prefix %}images/niaocao.jpg" width="50px" height="45px"></TD>
+						<TD>荣华南路，荣昌东街</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+		</DIV>
+		<DIV class="citydemo" id="taianDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('taian')">
+			<DIV class=tt>
+				<Label class="lbcls">南昌市</Label>
+				<SPAN class=more>
+					<A href="javascript:void(0)">点击查看&gt;&gt;</A>
+				</SPAN>
+			</DIV>
+			<TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+				<TBODY>
+					<TR>
+						<TD vAlign=top><IMG src="{% get_static_prefix %}images/taian.jpg" width="50px" height="45px"></TD>
+						<TD>孔目湖大街，英雄大桥</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+		</DIV>
+	</DIV>
+
+
+</Div>
+<!--left_end-->
+
+<!--中间部分_start-->
+<DIV id="hideResult" class="hideResult" onclick="j_ChangeContentSize();" style="display:none;"></DIV>
+<!--中间部分_end-->
+
+<!--地图窗口_start-->
+<DIV id="contentPanel" class="contentPanel2" style="left:2px;">
+	<DIV id="Toolbar">
+		<div style="position:absolute; left:10px;">
+			<input type=button class="btn" value="矢 量" onclick="j_changeLayers2('vec');" />
+			<input type=button class="btn" value="影 像" onclick="j_changeLayers2('img');" />
+			<input type=button class="btn" value="地 形" onclick="j_changeLayers2('ter');" />
+			<input type=button class="btn" value="街 景" onclick="j_ChangeSV();" />
+		</div>
+		<div style="position:absolute; right:30px;">
+		</div>
+	</DIV>
+	<DIV id="viewport" class="viewport"></DIV>
+	{% load panorama_tags %}
+	{% panorama_object "viewportstreetview" "100%" "100%" %}
+	<DIV id="smallContentPanel" class="smallContentPanel" style="display:none;">
+		<DIV id="smallviewport" class="smallviewport">
+
+		</DIV>
+		<DIV id="smallToggleDiv" class="smallToggleDiv">
+			<DIV id="dragDiv" class="dragDiv"></DIV>
+			<DIV id="anchorDiv" class="anchorDiv"></DIV>
+		</DIV>
+	</DIV>
+</div>
+<!--地图窗口_end-->
+
+</body>
+</html>

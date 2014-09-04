@@ -1,0 +1,10 @@
+{% load static %}
+<?xml version="1.0" encoding="utf-8"?>
+<poilist>
+    <pano name="{{% poi.pano %}}" />
+    <pois>
+        {% for poi in pois %}
+        <poi name="{{poi.name}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
+        {% endfor %}
+    </pois>
+</poilist>

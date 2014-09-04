@@ -1,0 +1,60 @@
+
+{% load static %}
+<html lang="zh">
+    {% load leaflet_tags %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0 ">
+        <meta name="author">
+        <link rel="shortcut icon" href="ico/favicon.png">
+        <title>preview {{layer.name}}</title>
+        {% leaflet_js plugins="lltdt_tilelayer,functional_tilelayer" %}
+        {% leaflet_css %}
+        <style type="text/css">
+            html, body, #map {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript">
+        {% if bWGS84 %}
+            var map = L.map('map', {crs: L.CRS.EPSG4326, minZoom: 1, attributionControl: true});
+            var attributionstr = "天地图矢量地图 ©天地图";
+            var url = 'http://{s}.tianditu.cn/vec_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=c&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=tiles';
+            var baseLayer = L.tileLayer.lltdt(url, {subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'], zIndex:0, attribution:attributionstr});
+            var labelLayerurl = 'http://{s}.tianditu.cn/cva_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cva&tileMatrixSet=c&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=tiles';
+            var labelLayer = L.tileLayer.lltdt(labelLayerurl, {zoomOffset: 0, subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'], zIndex:10});
+            map.addLayer(baseLayer);
+            map.addLayer(labelLayer);
+            var layer = new L.TileLayer.Functional(function (view) {
+                var url = '/geoproxy/vectortile/{{layer.name}}/{z}/{x}/{y}.{{layer.preview_ext}}'
+                    .replace('{z}', view.zoom-1)
+                    .replace('{y}', view.tile.row - Math.pow(2, view.zoom-2))
+                    .replace('{x}', view.tile.column);
+                return url;
+            });
+            map.addLayer(layer);
+        {% else %}
+            var map = L.map('map', {crs: L.CRS.EPSG3857, minZoom: 1, attributionControl: true});
+            var attributionstr = "天地图矢量地图 ©天地图";
+            var url = 'http://{s}.tianditu.cn/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=tiles';
+            var baseLayer = L.tileLayer(url, {zoomOffset: 0, subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'], zIndex:0, attribution:attributionstr});
+            var labelLayerurl = 'http://{s}.tianditu.cn/cva_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cva&tileMatrixSet=w&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=tiles';
+            var labelLayer = L.tileLayer(labelLayerurl, {zoomOffset: 0, subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'], zIndex:10});
+            map.addLayer(baseLayer);
+            map.addLayer(labelLayer);
+            var layer = L.tileLayer("/geoproxy/vectortile/{{layer.name}}/{z}/{x}/{y}.{{layer.preview_ext}}", {zoomOffset: 0});
+            map.addLayer(layer);
+        {% endif %}
+
+        map.setView([{{layer.preview_lat}}, {{layer.preview_lon}}], {{layer.preview_zoom}});
+
+        </script>
+    </body>
+</html>

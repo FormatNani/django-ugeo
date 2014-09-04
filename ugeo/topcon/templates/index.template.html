@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD  XHTML 1.0  Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<TITLE>拓普康街景浏览软件原型系统</TITLE>
+<LINK rel="stylesheet" href="css/app.css" type="text/css" />
+<link href="./libs/leaflet.css" type="text/css" rel="stylesheet">
+<!--[if lte IE 11]><link rel="stylesheet" href="./libs/leaflet2.css" /><![endif]-->
+<script type="text/javascript" src="./libs/leaflet.js"></script>
+<script type="text/javascript" src="js/j_sigm.js"></script>
+<script type="text/javascript" src="./libs/toggleControl.js"></script>
+<script type="text/javascript" src="js/j_divControl.js"></script>
+<script type="text/javascript" src="js/j_src.js"></script>
+<script type="text/javascript" src="js/j_smallView.js"></script>
+<script type="text/javascript" src="embed/swfobject.js"></script>
+<script type="text/javascript">
+			var flashvars = {};
+			flashvars.xml = "pano/init.xml"
+			var params = {};
+			params.menu = "false";
+			params.quality = "high";
+			params.allowfullscreen = "true";
+			swfobject.embedSWF("${swf}.swf", "viewportstreetview", "100%", "100%", "10.1.0", null, flashvars, params);
+
+		</script>
+</HEAD>
+<BODY onload="j_resize();j_init();">
+<!--头部_start-->
+<DIV id="mainTop" class="head">
+
+	<DIV class="logo"></DIV>
+</DIV>
+<!--头部_end-->
+
+<!--left_start-->
+<Div id="left" class="left">
+    <DIV id="mainDivTitle" class="title">
+        城市定位
+    </DIV>
+
+	<!--城市定位面板-->
+	<DIV id="demoCities" class="contentDiv" style="display:solid;background:#3CA5D4;bottom:0px;">
+        <DIV class="citydemo" id="beijingDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('beijing')">
+            <DIV class=tt>
+                <label class="lbcls">SIGM集团园区</label>
+                <SPAN class=more>
+                    <A href="javascript:void(0)">点击查看&gt;&gt;</A>
+                </SPAN>
+            </DIV>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+                <TBODY>
+                    <TR>
+                        <TD vAlign=top><IMG src="images/niaocao.jpg" width="50px" height="45px"></TD>
+                        <TD>荣华南路，荣昌东街</TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV class="citydemo" id="taianDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('taian')">
+            <DIV class=tt>
+                <Label class="lbcls">南昌市</Label>
+                <SPAN class=more>
+                    <A href="javascript:void(0)">点击查看&gt;&gt;</A>
+                </SPAN>
+            </DIV>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+                <TBODY>
+                    <TR>
+                        <TD vAlign=top><IMG src="images/taian.jpg" width="50px" height="45px"></TD>
+                        <TD>孔目湖大街，英雄大桥</TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+    </DIV>
+
+
+</Div>
+<!--left_end-->
+
+<!--中间部分_start-->
+<DIV id="hideResult" class="hideResult"></DIV>
+<!--中间部分_end-->
+
+<!--地图窗口_start-->
+<DIV id="contentPanel" class="contentPanel">
+    <DIV id="Toolbar">
+		<div style="position:absolute; left:10px;">
+			<input type=button class="btn" value="矢 量" onclick="j_changeLayers2('vec');" />
+			<input type=button class="btn" value="影 像" onclick="j_changeLayers2('img');" />
+			<input type=button class="btn" value="地 形" onclick="j_changeLayers2('ter');" />
+			<input type=button class="btn" value="街 景" onclick="j_ChangeSV();" />
+		</div>
+		<div style="position:absolute; right:30px;">
+		</div>
+	</DIV>
+    <DIV id="viewport" class="viewport"></DIV>
+    <DIV id="viewportstreetview" class="viewport" style="display:none;">
+
+	</DIV>
+	<DIV id="smallContentPanel" class="smallContentPanel">
+		<DIV id="smallviewport" class="smallviewport">
+
+		</DIV>
+		<DIV id="smallToggleDiv" class="smallToggleDiv">
+			<DIV id="dragDiv" class="dragDiv"></DIV>
+			<DIV id="anchorDiv" class="anchorDiv"></DIV>
+		</DIV>
+	</DIV>
+</div>
+<!--地图窗口_end-->
+
+<!--bottom_start-->
+<DIV id="bottom" class="bottom" >
+    <DIV id="state" class="state"><a href="#" target="_blank"><font color="#ffffff" face="微软雅黑">&nbsp;&nbsp;拓普康街景浏览软件原型系统</font></a></DIV>
+    <DIV id='danwei' class='danwei'> <font color="#333333" face="微软雅黑"></font>
+        <a href="#" target="blank" style="font-size:9pt; text-decoratin:none;">
+            <font color="#ffffff" face="微软雅黑">技术支持：神州通图(北京)信息技术有限公司</font>
+        </a>&nbsp;&nbsp;&nbsp;
+    </Div>
+</DIV>
+<!--bottom_end-->
+</BODY>
+</HTML>

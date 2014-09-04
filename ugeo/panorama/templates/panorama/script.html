@@ -1,0 +1,20 @@
+{% load static %}
+<script type="text/javascript" src="{% get_static_prefix %}embed/swfobject.js"></script>
+<script type="text/javascript">
+<!--
+  var flashvars = {};
+  flashvars.xml = "/pano/init.xml";
+  var params = {};
+  params.play = "true";
+  params.loop = "false";
+  params.menu = "false";
+  params.quality = "high";
+  params.scale = "showall";
+  params.wmode = "window";
+  params.bgcolor = "#FFFFFF";
+  params.devicefont = "false";
+  params.allowfullscreen = "true";
+  var attributes = {};
+  swfobject.embedSWF("{% get_static_prefix %}xpano.swf", "{{div_name}}", "{{width}}", "{{height}}", "10.0.0", "{% get_static_prefix %}embed/expressInstall.swf", flashvars, params, attributes);
+-->
+</script>

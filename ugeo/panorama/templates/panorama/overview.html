@@ -1,0 +1,21 @@
+<html>
+<head>
+{% load static %}
+<meta name="title" content="streetview" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style type="text/css">
+    html, body, #panorama {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+{% load panorama_tags %}
+{% panorama_script "panorama" "100%" "100%" %}
+</head>
+<body>
+{% panorama_div "panorama" "" %}
+</body>
+</html>

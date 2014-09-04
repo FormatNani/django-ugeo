@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD  XHTML 1.0  Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<TITLE>拓普康街景浏览软件原型系统</TITLE>
+<LINK rel="stylesheet" href="css/app.css" type="text/css" />
+<link href="./libs/leaflet.css" type="text/css" rel="stylesheet">
+<!--[if lte IE 11]><link rel="stylesheet" href="./libs/leaflet2.css" /><![endif]-->
+<script type="text/javascript" src="./libs/leaflet.js"></script>
+<script type="text/javascript" src="js/j_sigm.js"></script>
+<script type="text/javascript" src="./libs/toggleControl.js"></script>
+<script type="text/javascript" src="js/j_divControl.js"></script>
+<script type="text/javascript" src="js/j_src.js"></script>
+<script type="text/javascript" src="js/j_smallView.js"></script>
+<script type="text/javascript" src="embed/swfobject.js"></script>
+<script type="text/javascript">
+			var flashvars = {};
+			flashvars.xml = "init.xml"
+			var params = {};
+			params.menu = "false";
+			params.quality = "high";
+			params.allowfullscreen = "true";
+			//swfobject.embedSWF("xpano.swf", "viewportstreetview", "100%", "100%", "10.1.0", null, flashvars, params);
+			
+		</script>
+</HEAD>
+<BODY onload="j_resize();j_init();">
+<!--头部_start-->
+<DIV id="mainTop" class="head">
+
+	<DIV class="logo"></DIV>
+</DIV>
+<!--头部_end-->
+
+<!--left_start-->
+<Div id="left" class="left" style="display:none;">
+    <DIV id="mainDivTitle" class="title">
+        城市定位
+    </DIV>
+
+	<!--城市定位面板-->
+	<DIV id="demoCities" class="contentDiv" style="display:solid;background:#3CA5D4;bottom:0px;">
+        <DIV class="citydemo" id="beijingDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('beijing')">
+            <DIV class=tt>
+                <label class="lbcls">SIGM集团园区</label>
+                <SPAN class=more>
+                    <A href="javascript:void(0)">点击查看&gt;&gt;</A>
+                </SPAN>
+            </DIV>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+                <TBODY>
+                    <TR>
+                        <TD vAlign=top><IMG src="images/niaocao.jpg" width="50px" height="45px"></TD>
+                        <TD>荣华南路，荣昌东街</TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV class="citydemo" id="taianDiv" onmouseover="this.className='citydemo2'" onmouseout="this.className='citydemo'" onclick="showDemoCity('taian')">
+            <DIV class=tt>
+                <Label class="lbcls">南昌市</Label>
+                <SPAN class=more>
+                    <A href="javascript:void(0)">点击查看&gt;&gt;</A>
+                </SPAN>
+            </DIV>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="90%">
+                <TBODY>
+                    <TR>
+                        <TD vAlign=top><IMG src="images/taian.jpg" width="50px" height="45px"></TD>
+                        <TD>孔目湖大街，英雄大桥</TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+    </DIV>
+
+
+</Div>
+<!--left_end-->
+
+<!--中间部分_start-->
+<DIV id="hideResult" class="hideResult" onclick="j_ChangeContentSize();" style="display:none;"></DIV>
+<!--中间部分_end-->
+
+<!--地图窗口_start-->
+<DIV id="contentPanel" class="contentPanel2" style="left:2px;">
+    <DIV id="Toolbar">
+		<div style="position:absolute; left:10px;">
+			<input type=button class="btn" value="矢 量" onclick="j_changeLayers2('vec');" />
+			<input type=button class="btn" value="影 像" onclick="j_changeLayers2('img');" />
+			<input type=button class="btn" value="地 形" onclick="j_changeLayers2('ter');" />
+			<input type=button class="btn" value="街 景" onclick="j_ChangeSV();" />
+		</div>
+		<div style="position:absolute; right:30px;">
+		</div>
+	</DIV>
+    <DIV id="viewport" class="viewport"></DIV>
+	 <!--<OBJECT width="100%" height="100%" id="viewportstreetview" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" style="width: 753px; height: 431px; visibility: visible;display:none;">
+	<PARAM NAME=movie VALUE="xpano.swf">
+      <PARAM NAME=quality VALUE=high>
+      <PARAM NAME=scale VALUE=noborder>
+      <PARAM NAME=bgcolor VALUE=#000000>
+		<PARAM name="flashvars" value="init.xml">
+	  <param name="allowScriptAccess" value="always" />
+      <EMBED src="xpano.swf" quality=high WIDTH="100%" HEIGHT="500" scale=noborder bgcolor=#000000 NAME="viewportstreetview"TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>
+	   </OBJECT>-->
+    <!--<DIV id="viewportstreetview" class="viewport"></DIV> -->
+   
+	 	<object type="application/x-shockwave-flash"  width="100%" height="100%" id="viewportstreetview" style="visibility: visible; width: 1136px; height: 198px;display:none;z-index:0;">
+			<param name="menu" value="false">
+			<param name="quality" value="high">
+			<param name="movie" value="xpano.swf" />
+			<param name="allowScriptAccess" value="always" />
+			<param name="allowfullscreen" value="true">
+			<param name="flashvars" value="xml=init.xml">
+			<embed src="viewportstreetview.swf" quality="high" bgcolor="#869ca7"
+						  width="100%" height="100%" name="viewportstreetview" align="middle"
+						 play="true" loop="false" quality="high" allowScriptAccess="always"
+						 type="application/x-shockwave-flash">
+			</embed>
+		</object>
+
+
+	<DIV id="smallContentPanel" class="smallContentPanel" style="display:none;">
+		<DIV id="smallviewport" class="smallviewport">
+
+		</DIV>
+		<DIV id="smallToggleDiv" class="smallToggleDiv">
+			<DIV id="dragDiv" class="dragDiv"></DIV>
+			<DIV id="anchorDiv" class="anchorDiv"></DIV>
+		</DIV>
+	</DIV>
+</div>
+<!--地图窗口_end-->
+
+
+<!--bottom_end-->
+</BODY>
+</HTML>

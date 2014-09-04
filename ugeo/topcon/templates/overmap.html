@@ -1,0 +1,28 @@
+<html>
+<head>
+{% load static %}
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<TITLE>overlay map</TITLE>
+<LINK rel="stylesheet" href="{% get_static_prefix %}css/app.css" type="text/css" />
+<link rel="stylesheet" href="{% get_static_prefix %}libs/leaflet.css" type="text/css">
+<!--[if lte IE 10]><link rel="stylesheet" href="{% get_static_prefix %}libs/leaflet2.css" /><![endif]-->
+<script type="text/javascript" src="{% get_static_prefix %}libs/leaflet.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}libs/toggleControl.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_divControl.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_src.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}js/j_smallView.js"></script>
+{% load panorama_tags %}
+{% panorama_script "viewport" "100%" "100%" %}
+</head>
+<body onload="j_resize();j_init();">
+{% panorama_div "viewport" "viewport" %}
+<DIV id="smallContentPanel" class="smallContentPanel">
+	<DIV id="smallviewport" class="smallviewport">
+	</DIV>
+	<DIV id="smallToggleDiv" class="smallToggleDiv">
+		<DIV id="dragDiv" class="dragDiv"></DIV>
+		<DIV id="anchorDiv" class="anchorDiv"></DIV>
+	</DIV>
+</DIV>
+</body>
+</html>

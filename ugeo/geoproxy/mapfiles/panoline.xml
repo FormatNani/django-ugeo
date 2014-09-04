@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs">
+    <Style name="panoline">
+        <Rule>
+            <LineSymbolizer stroke="#00CCEE" stroke-width="8" stroke-opacity="0.5" />
+        </Rule>
+    </Style>
+    <Layer name="layer">
+        <StyleName>panoline</StyleName>
+        <Datasource>
+            <Parameter name="type">sqlite</Parameter>
+            <Parameter name="file">topcon.db</Parameter>
+            <Parameter name="table">panorama_panolinedata</Parameter>
+            <Parameter name="base">/Users/sw/github/django-ugeo/ugeo/data/</Parameter>
+            <Parameter name="geometry_field">geom</Parameter>
+        </Datasource>
+    </Layer>
+</Map>

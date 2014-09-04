@@ -1,0 +1,15 @@
+{% load static %}
+<?xml version="1.0" encoding="utf-8"?>
+<panoinfo>
+    <pano name="{{pano.name}}" direction="{{pano.direction}}" latitude="{{pano.lat}}" longitude="{{pano.lon}}" altitude="{{pano.alt}}" zenith="{{pano.zenith}}" nadir="{{pano.nadir}}" />
+    <neighbours>
+        {% for p in neighbours %}
+        <neighbour name="{{p.name}}" direction="{{p.direction}}" latitude="{{p.lat}}" longitude="{{p.lon}}" altitude="{{p.alt}}" />
+        {% endfor %}
+    </neighbours>
+    <pois>
+        {% for poi in pois %}
+        <poi name="{{poi.name}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" pan="{{poi.pan}}" tilt="{{poi.tilt}}" />
+        {% endfor %}
+    </pois>
+</panoinfo>
