@@ -12,7 +12,7 @@
             <Parameter name="type">sqlite</Parameter>
             <Parameter name="file">topcon.db</Parameter>
             <Parameter name="table">panorama_panopointdata</Parameter>
-            <Parameter name="base">/Users/sw/github/django-ugeo/data/</Parameter>
+            <Parameter name="base">../../data/</Parameter>
             <Parameter name="geometry_field">geom</Parameter>
         </Datasource>
     </Layer>
