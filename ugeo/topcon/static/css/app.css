@@ -12,13 +12,13 @@ body{height:100%;overflow:hidden;background:#5D5F5E;font-family:微软雅黑;}
 }
 /*-------------head部分----------------*/
 /*head 主DIV*/
-.head {position:absolute;float:left;top:0;left:0;width:100%;height:212px;padding:0,0,0,0;background:url(../images/titlebg.jpg) repeat-x;}
+.head {position:absolute;float:left;top:0;left:0;width:100%;height:212px;padding:0,0,0,0;background:#FFF;}
 /*右上角功能菜单*/
 .topmenu{position:absolute; line-height:30px;text-align:right;top:5px; width:900px;right:3px;font-family:微软雅黑; font-size:9pt;color:#74A7E1;z-index:1;}
 .topmenu a{cursor:pointer;color:#3489DE;text-decoration:none;font-size:9pt;}
 .topmenu a:hover{color:#E66635;text-decoration:underline; font-size:12pt;}
 /*左侧的logo*/
-.logo{position:absolute;width:591px; height:67px; margin:0px 0 0 0px; top:0px;left:0px;background:url(../images/title.jpg) no-repeat;float:left;}
+.logo{position:absolute;width:458px; height:74px; margin:0px 0 0 0px; top:18px;left:6px;background:url(../images/logo.png) no-repeat;float:left;}
 /*-------------head部分 完毕----------------*/
 
 

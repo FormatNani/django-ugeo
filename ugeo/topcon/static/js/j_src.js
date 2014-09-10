@@ -12,7 +12,8 @@ var SVTileLayer2,  svTileLayer;//SV图层
 var j_tog;//控制街景小地图
 var j_svTag = false;
 
-var myhost = "127.0.0.1:8000";
+var myhost = "www.chinamap.me:8000";
+// var myhost = "127.0.0.1:8000";
 var panoUrl = "http://"+myhost+"/pano/";
 
 //初始化地图对象
@@ -73,7 +74,7 @@ function j_addControls(){
 	//添加鼠标位置控件
 	j_map.addControl(new L.Controls.Position());
 	//添加导航条控件
-	j_map.addControl(new L.Controls.PanZoomBar());
+	j_map.addControl(new L.Controls.PanZoomBar({useLevelTag:false}));
 }
 
 //初始化图层对象
@@ -423,6 +424,7 @@ function j_initLayers(){
 		resolutions: layerResArr,
 		format:"tiles",
 		serverResolutions: serverResolutions,
+
 		units:"m",
 		projection:prj,
 		maxExtent:extent,
@@ -548,10 +550,15 @@ function clickSVLoc(e){
 			j_svNullMarker.setVisible(false);
 		}
 		var loc = e.point;
+		var d = 180 / Math.PI;
+		var R = 6378137;
+		var lon = loc.x * d / R;
+		var lat = (2 * Math.atan(Math.exp(loc.y / R)) - (Math.PI / 2)) * d;
 	//	var curDis = j_map.getResolution() * 10 * L.Util.INCHES_PER_UNIT.dd /  L.Util.INCHES_PER_UNIT.m;
 		var curDis = j_map.getResolution() * 10 * L.Util.INCHES_PER_UNIT.m /  L.Util.INCHES_PER_UNIT.m;
 		curDis = parseInt(curDis);
-		var url = panoUrl + loc.x + "," + loc.y +"?distance="+curDis;
+		// var url = panoUrl + loc.x + "," + loc.y +"?distance="+curDis;
+		var url = panoUrl + lon + "," + lat +"?distance="+curDis;
 		j_unsetEvents();
 		j_lastSVMarkerLoc = loc;
 
