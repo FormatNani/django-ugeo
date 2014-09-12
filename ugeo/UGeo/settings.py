@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'south',
+    #'south',
     'leaflet',
     'djgeojson',
     'panorama',
@@ -76,6 +76,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'data', 'topcon.db'),
     }
 }
+
+#SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
+SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
