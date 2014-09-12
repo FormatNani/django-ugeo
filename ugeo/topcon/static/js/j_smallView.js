@@ -101,7 +101,11 @@ NDragToggle = L.Class.extend({
 		this._showSvClickMarker(pos2);
 		var curDis = this._map.getResolution() * 10 * L.Util.INCHES_PER_UNIT.dd /  L.Util.INCHES_PER_UNIT.m;
 		curDis = parseInt(curDis);
-		var url = panoUrl + pos2.x + "," + pos2.y +"?distance="+curDis;
+		var d = 180 / Math.PI;
+		var R = 6378137;
+		var lon = pos2.x * d / R;
+		var lat = (2 * Math.atan(Math.exp(pos2.y / R)) - (Math.PI / 2)) * d;
+		var url = panoUrl + lon + "," + lat +"?distance="+curDis;
 		L.HttpObj.GET({
             url: url,
             //success: showSWFSV,
