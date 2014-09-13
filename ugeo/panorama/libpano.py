@@ -271,6 +271,9 @@ class PanoTileStore(object):
       #dsn parameter:"dbname=test user=postgres password=postgres host=127.0.0.1 port=5432"
       return PgSqlPanoTileStore(psycopg2.connect(name[3:]))
 
+  def close(self):
+    return True
+
 class FilesystemPanoTileStore(PanoTileStore):
 
   def __init__(self, path, **kwargs):
@@ -385,7 +388,6 @@ class SqlitePanoTileStore(PanoTileStore):
     self.connection.commit()
 
   def close_database(self):
-    self.optimize_database()
     self.cursor.close()
     self.connection.close()
 
@@ -409,6 +411,10 @@ class SqlitePanoTileStore(PanoTileStore):
     """
     self.cursor.execute(query, (tile.pano_name, tile.cubic_surface, tile.tilecoord.z, tile.tilecoord.x, tile.tilecoord.y, sqlite3.Binary(tile.data)))
     return tile
+
+  def close(self):
+      self.close_database()
+      return True
 
 class Bounds(object):
 

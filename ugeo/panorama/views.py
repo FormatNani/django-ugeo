@@ -180,6 +180,7 @@ def panoTile(request, pano_name, face, zoom, col, row, extension):
     tile = PanoTile(pano_name, int(face), tilecoord)
     print tile
     tile = pano_store.get_tile(tile)
+    pano_store.close()
     if tile.data:
         return HttpResponse(tile.data, content_type="image/jpeg", status=200)
     else:
