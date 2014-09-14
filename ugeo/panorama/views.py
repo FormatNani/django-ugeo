@@ -166,7 +166,7 @@ def panoPOI(request, pano_name):
     return render(request, 'panorama/poi.xml',{'pois':pois})
 
 def panoTile(request, pano_name, face, zoom, col, row, extension):
-    # print pano_name, face, zoom, col, row
+    # # using django module
     # try:
     #     tile = PanoTileData.objects.get(pano_name=pano_name, cubic_surface=int(face), \
     #         zoom_level=int(zoom), tile_column=int(col), tile_row=int(row))
@@ -174,11 +174,11 @@ def panoTile(request, pano_name, face, zoom, col, row, extension):
     # except ObjectDoesNotExist:
     #     return HttpResponse(content_type="image/jpeg", status=404)
 
+    # using pano_store
     ds_pano = PANO_CONFIG["panostore"]
     pano_store = PanoTileStore.load(ds_pano)
     tilecoord = TileCoord(int(col), int(row), int(zoom))
     tile = PanoTile(pano_name, int(face), tilecoord)
-    print tile
     tile = pano_store.get_tile(tile)
     pano_store.close()
     if tile.data:

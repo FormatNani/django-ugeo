@@ -364,6 +364,7 @@ class SqlitePanoTileStore(PanoTileStore):
   def create_tiles_table(self):
     self.cursor.execute("""
         create table if not exists panorama_panotiledata (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             pano_name character,
             cubic_surface integer,
             zoom_level integer,
