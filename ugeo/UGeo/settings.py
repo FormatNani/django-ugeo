@@ -67,8 +67,8 @@ DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'NAME': 'topcon',
-         'USER': 'postgres',
-         'PASSWORD': 'postgres',
+         'USER': '_postgres',
+         'PASSWORD': '_postgres',
          'HOST': '127.0.0.1',
          'CONN_MAX_AGE':None,
      },
@@ -80,7 +80,7 @@ DATABASES = {
 }
 
 SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
-SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
+# SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

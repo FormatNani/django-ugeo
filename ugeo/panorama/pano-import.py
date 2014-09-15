@@ -90,9 +90,9 @@ def interiorview_init(ds_pano, panodir):
     pass
 
 if __name__ == "__main__":
-  ds_pano = "pg:dbname='topcon' host='127.0.0.1' port='5432' user='_postgres' password='_postgres'"
+  ds_pano = "pg:dbname='topcon' host='127.0.0.1' port='5432' user='postgres' password='postgres'"
   # ds_pano = "sqlite3:../data/topcon2.db"
-  ips_file = "/Users/sw/360云盘/拓普康项目/data/sroucedata/topcon-streetpano-20140824/posed_lb_ _4pics"
+  ips_file = "../data/posed_lb_ _4pics"
   srid = 900913
   streetview_init(ds_pano, ips_file, meta=True, pano=False, xflip=True, srid=srid)
   # interiorview_init(ds_pg, ds_pano, panodir)
