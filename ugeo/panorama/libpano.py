@@ -417,6 +417,155 @@ class SqlitePanoTileStore(PanoTileStore):
       self.close_database()
       return True
 
+class PanoMetaStore(object):
+  """pano metadata 存储类"""
+  def __init__(self, **kwargs):
+    for key, value in kwargs.iteritems():
+      setattr(self, key, value)
+
+  def optimize_connection(self):
+    pass
+
+  def optimize_database(self):
+    self.cursor.execute("""ANALYZE;""")
+    self.cursor.execute("""VACUUM;""")
+
+  @classmethod
+  def load(cls, name):
+    try:
+      if name.startswith('sqlite3:'):
+          return SqlitePanoMetaStore(sqlite3.connect(name[8:]))
+      elif name.startswith('pg:'):
+          import psycopg2
+          #dsn parameter:"dbname=test user=postgres password=postgres host=127.0.0.1 port=5432"
+          return PgSqlPanoMetaStore(psycopg2.connect(name[3:]))
+      else:
+          raise
+    except Exception, e:
+      print "Could not connect to database"
+      sys.exit(1)
+
+  def close_database(self):
+    self.cursor.close()
+    self.connection.close()
+
+  def close(self):
+    self.close_database()
+
+  def begin_trans(self):
+    pass
+
+  def commit_trans(self):
+    pass
+
+  def commit_database(self):
+    pass
+
+  def put_point(self, point):
+      raise NotImplementedError
+
+  def put_line(self, line):
+      raise NotImplementedError
+
+  def get_point(self):
+      raise NotImplementedError
+
+  def get_line(self):
+      raise NotImplementedError
+
+  def put_point_from_panos(self, pm, cubic_size=1720, srid=900913):
+    raise NotImplementedError
+
+  def put_points_from_panos(self, panometas, cubic_size=1720, srid=900913):
+      self.begin_trans()
+      for pm in panometas:
+          self.put_point_from_panos(pm, cubic_size)
+      self.commit_trans()
+
+  def put_lines_from_panos(self, panometas, srid=900913):
+      NotImplementedError
+
+
+class PgSqlPanoMetaStore(PanoMetaStore):
+
+  def __init__(self, connection, **kwargs):
+    PanoMetaStore.__init__(self, **kwargs)
+    self.connection = connection
+    self.cursor = self.connection.cursor()
+
+  def begin_trans(self):
+    self.cursor.execute("BEGIN;")
+
+  def commit_trans(self):
+    self.cursor.execute("COMMIT;")
+
+  def put_point_from_panos(self, pm, cubic_size=1720, srid=900913):
+    point = "POINT (" + pm.position.toString2D() + ")"
+    query = """INSERT INTO panorama_panopointdata (geom, altitude, name, file_type,
+      ca_type, ca_subtype, seq_id, "timestamp", "GPS_time_s", "GPS_time_u",
+      attitude_x, attitude_y, attitude_z, trigger_id, frame_id, cubic_size)
+      VALUES (ST_GeomFromText('%s', %d), %f, '%s', '%s', %d, %d, %d, %s, %d, %d, %f, %f, %f, %d, %d, %d);
+      """ % (point, srid, pm.position.alt, pm.name, pm.file_type,
+          pm.ca_type, pm.ca_subtype, pm.seq_id, str(pm.timestamp), pm.GPS_time_s, pm.GPS_time_u,
+          pm.attitude_x, pm.attitude_y, pm.attitude_z, pm.trigger_id, pm.frame_id, cubic_size)
+    self.cursor.execute(query)
+
+  def put_lines_from_panos(self, panometas, srid=900913):
+      self.begin_trans()
+      for i in range(len(panometas)-1):
+        linestring = 'LINESTRING ('
+        linestring += panometas[i].position.toString2D()
+        linestring += ','
+        linestring += panometas[i+1].position.toString2D()
+        linestring += ')'
+        query = """INSERT INTO panorama_panolinedata (geom, name, start, "end")
+        VALUES (ST_GeomFromText('%s', %d), '%s', '%s', '%s');
+        """ % (linestring, srid, 'undefine', panometas[i].name, panometas[i+1].name)
+        self.cursor.execute(query)
+      self.commit_trans()
+
+class SqlitePanoMetaStore(PanoMetaStore):
+
+  def __init__(self, connection, **kwargs):
+    PanoMetaStore.__init__(self, **kwargs)
+    self.connection = connection
+    from ctypes.util import find_library
+    self.connection.enable_load_extension(True)
+    spatialite_lib = find_library('mod_spatialite')
+    self.connection.load_extension(spatialite_lib)
+    self.cursor = self.connection.cursor()
+    self.optimize_connection()
+
+  def optimize_connection(self):
+    self.cursor.execute("""PRAGMA synchronous=0""")
+    self.cursor.execute("""PRAGMA locking_mode=EXCLUSIVE""")
+    self.cursor.execute("""PRAGMA journal_mode=DELETE""")
+
+  def commit_database(self):
+    self.connection.commit()
+
+  def put_point_from_panos(self, pm, cubic_size=1720, srid=900913):
+    point = "POINT (" + pm.position.toString2D() + ")"
+    query = """INSERT INTO panorama_panopointdata (geom, altitude, name, file_type,
+      ca_type, ca_subtype, seq_id, "timestamp", "GPS_time_s", "GPS_time_u",
+      attitude_x, attitude_y, attitude_z, trigger_id, frame_id, cubic_size)
+      VALUES (GeomFromText(?, ?), ?, ?, ?, ?, ?,
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+    self.cursor.execute(query, (point, srid, pm.position.alt, pm.name, pm.file_type,
+        pm.ca_type, pm.ca_subtype, pm.seq_id, str(pm.timestamp), pm.GPS_time_s, pm.GPS_time_u,
+        pm.attitude_x, pm.attitude_y, pm.attitude_z, pm.trigger_id, pm.frame_id, cubic_size))
+
+  def put_lines_from_panos(self, panometas, srid=900913):
+      for i in range(len(panometas)-1):
+        linestring = 'LINESTRING ('
+        linestring += panometas[i].position.toString2D()
+        linestring += ','
+        linestring += panometas[i+1].position.toString2D()
+        linestring += ')'
+        query = """INSERT INTO panorama_panolinedata (geom, name, start, "end")
+        VALUES (GeomFromText(?, ?), ?, ?, ?);"""
+        self.cursor.execute(query, (linestring, srid, 'undefine', panometas[i].name, panometas[i+1].name))
+
 class Bounds(object):
 
   def __init__(self, start=None, stop=None):

@@ -64,21 +64,22 @@ WSGI_APPLICATION = 'UGeo.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #      'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    #      'NAME': 'topcon',
-    #      'USER': '_postgres',
-    #      'PASSWORD': '_postgres',
-    #      'HOST': '127.0.0.1'
-    #  }
     'default': {
+         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+         'NAME': 'topcon',
+         'USER': 'postgres',
+         'PASSWORD': 'postgres',
+         'HOST': '127.0.0.1',
+         'CONN_MAX_AGE':None,
+     },
+    'undefault': {
         'ENGINE': 'django.contrib.gis.db.backends.spatialite',
         'NAME': os.path.join(BASE_DIR, 'data', 'topcon.db'),
         'CONN_MAX_AGE':None,
     }
 }
 
-#SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
+# SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
 SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
 
 # Internationalization
