@@ -175,8 +175,7 @@ def panoTile(request, pano_name, face, zoom, col, row, extension):
     #     return HttpResponse(content_type="image/jpeg", status=404)
 
     # using pano_store
-    ds_pano = PANO_CONFIG["panostore"]
-    pano_store = PanoTileStore.load(ds_pano)
+    pano_store = PanoTileStore.load(PANO_CONFIG["panostore"])
     tilecoord = TileCoord(int(col), int(row), int(zoom))
     tile = PanoTile(pano_name, int(face), tilecoord)
     tile = pano_store.get_tile(tile)

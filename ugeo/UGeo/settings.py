@@ -79,7 +79,7 @@ DATABASES = {
     }
 }
 
-# SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
+SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
 SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
 
 # Internationalization
