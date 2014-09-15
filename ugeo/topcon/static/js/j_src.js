@@ -12,8 +12,8 @@ var SVTileLayer2,  svTileLayer;//SV图层
 var j_tog;//控制街景小地图
 var j_svTag = false;
 
-var myhost = "www.chinamap.me:8000";
-// var myhost = "127.0.0.1:8000";
+var myhost = "127.0.0.1:8000";
+myhost = "www.chinamap.me:8000";
 var panoUrl = "http://"+myhost+"/pano/";
 
 //初始化地图对象

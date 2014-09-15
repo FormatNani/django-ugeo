@@ -80,7 +80,7 @@ DATABASES = {
 }
 
 SPATIALITE_LIBRARY_PATH = '/usr/local/Cellar/libspatialite/4.2.0/lib/mod_spatialite.dylib'
-# SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
+SPATIALITE_LIBRARY_PATH = '/usr/local/lib/mod_spatialite.so'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -117,3 +117,5 @@ PANO_CONFIG = {
     'srid':900913,
     'DEBUG':False,
 }
+
+POSTGIS_VERSION = (2, 1, 3)
