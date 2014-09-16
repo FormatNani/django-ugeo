@@ -1048,3 +1048,32 @@ def safe_open(path):
     return StringIO.StringIO(urllib.urlopen(path).read())
 
 ################################################################################
+
+def read_pano_from_line(line, srid):
+  pano = DotDict()
+  assert line[0:1] != "#", "line为注释内容"
+  values = line.split('\t')
+  assert len(values) == 16, "ips文件结构不同"
+  filename = values[0]
+  name = filename.rsplit('\\')[-1][0:-1]
+  name, ext = os.path.splitext(name)
+  pano.name = name
+  pano.file_type = values[1][1:-1] #去掉引号
+  pano.ca_type = int(values[2])
+  pano.ca_subtype = int(values[3])
+  pano.seq_id = int(values[4])
+  pano.timestamp = int(values[5])
+  pano.GPS_time_s = int(values[6])
+  pano.GPS_time_u = int(values[7])
+  lonlat = LonLat(float(values[9]), float(values[8]))
+  if srid == 900913:
+    point = WebMercatorProjection.project(lonlat)
+    pano.position = Position(point.x, point.y, float(values[10]))
+  else:
+    pano.position = Position(lonlat.lon, lonlat.lat, float(values[10]))
+  pano.attitude_x = float(values[11])
+  pano.attitude_y = float(values[12])
+  pano.attitude_z = float(values[13])
+  pano.trigger_id = int(values[14])
+  pano.frame_id = int(values[15])
+  return pano
