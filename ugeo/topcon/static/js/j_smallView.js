@@ -169,7 +169,7 @@ NDragToggle = L.Class.extend({
 	},
 
 	update:function (forceTag){
-		this._maxSize = new L.Loc(this.parentPanel.clientWidth, this.parentPanel.clientHeight);
+		this._maxSize = new L.Loc(this.parentPanel.clientWidth - 2, this.parentPanel.clientHeight -2);
         this._parentPanelPos = new L.Loc(this.parentPanel.offsetLeft, this.parentPanel.offsetTop);
 		if(this._curSize){
 			this.setSize(this._curSize);
@@ -291,10 +291,10 @@ NDragToggle = L.Class.extend({
 		var width = size.x;
 		var height = size.y;
 		width = this._minSize.x > width ? this._minSize.x : width;
-		width = this._maxSize.x > width ? width : this._maxSize.x;
+		width = this._maxSize.x - 84 > width ? width : this._maxSize.x;
 
 		height = this._minSize.y > height ? this._minSize.y : height;
-		height = this._maxSize.y > height ? height : this._maxSize.y;
+		height = this._maxSize.y -84 > height ? height : this._maxSize.y;
 
 		return new L.Loc(width, height);
 	},
