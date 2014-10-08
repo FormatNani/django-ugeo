@@ -368,6 +368,67 @@ JSVMarkerOptions = {
     zIndexOffset: 0
 };
 
+JCameraMarker = L.Ols.BgMarker.extend({
+	initialize: function (lonlat, options) {
+        this.options = L.Util.extend({}, {
+			imgUrl: L.Icon.Default.imagePath + 'camera.png',
+			shadowUrl: '',
+			markerSize: new L.Loc(17, 15),
+			shadowSize: new L.Loc(27, 18),
+			imgOffset: new L.Loc(26,22),
+			visible: true,
+			markerAnchor: new L.Loc(8, 8),
+			shadowAnchor: new L.Loc(9, 18),
+			popupAnchor: new L.Loc(0, -8),
+			markerTitle: '',
+			popable:true,
+			clickable: true,
+			draggable: false,
+			zIndexOffset: 0
+		}, options);
+        this._latlng = lonlat;
+    },
+
+    _createMarkerTarget: function () {
+        var tmpDiv = L.Util.create('div', 'leaflet-marker-div leaflet-camera-div');
+        return tmpDiv;
+    },
+    
+    _updateMarker: function () {
+        var offset = this.options.imgOffset,
+            size = this.options.markerSize,
+            shadowSize = this.options.shadowSize,
+            labelSize = this.options.labelSize,
+            markerAnchor = this.options.markerAnchor,
+            markerTitle = this.options.markerTitle,
+            markerZIndex = !isNaN(this.options.zIndexOffset) ? Math.round(this.options.zIndexOffset) : 0;
+            shadowAnchor = this.options.shadowAnchor;
+            labelAnchor = this.options.labelAnchor;
+        if(this._markerTarget){
+            
+            this._markerTarget.title =this.options.markerTitle;
+            
+        }
+        
+        if(this._label){
+            if(labelAnchor){
+                this._label.style.marginLeft = (-labelAnchor.x) + 'px';
+                this._label.style.marginTop = (-labelAnchor.y) + 'px';
+            }
+            if(labelSize){
+                this._label.style.width = labelSize.x + 'px';
+                this._label.style.height = labelSize.y + 'px';
+            }
+            if(this.options.labeClass && this.options.labeClass instanceof Object ){
+				var labeClass = this.options.labeClass;
+				for(var key in labeClass){
+					this._label.style[key] = labeClass[key];
+				}
+			}
+        }
+    }
+});
+
 
 JToggleControl = L.Controls.Base.extend({
 	_type : "JToggleControl",

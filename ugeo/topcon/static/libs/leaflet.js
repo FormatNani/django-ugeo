@@ -7785,20 +7785,6 @@ L.Layers.TPCTileLayer = L.Layers.WMTS.extend({
         return encodeURI(resultUrl);
     }
 });
-L.Layers.TPCTileLayer = L.Layers.WMTS.extend({
-	_getTileUrl: function (z, y, x) {
-        if(!this.url)
-            return null;
-        var resultUrl = this.url;
-       
-		if(resultUrl.charAt(resultUrl.length - 1) != '/')
-			resultUrl += "/";
-		resultUrl += z + '/' + x + "/" + y + '.' + this.getFormat(null, false); 
-	
-            
-        return encodeURI(resultUrl);
-    }
-});
 
 L.Controls = {};
 /**

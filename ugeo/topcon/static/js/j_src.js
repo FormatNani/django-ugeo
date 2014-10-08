@@ -468,6 +468,7 @@ function j_showSV(){
 		j_svLastMarker.setPosition(j_svMarker.getPosition());
 		j_svLastMarker.setVisible(true);
 	}
+	
 	j_setEvents();
 }
 function j_setEvents(){
@@ -614,7 +615,11 @@ function showSWFSV(e){
 					document.getElementById("viewport").style.display = "none";
 
 					j_tog.update(true);
-					j_tog._map.moveTo(j_lastSVMarkerLoc);;
+					j_tog._map.moveTo(j_lastSVMarkerLoc);
+					
+					document.getElementById("controliconquit").style.display = "";
+					
+					L.Util.addClass(L.Util.get("Toolbar"), "toolbar2");
 				}
 			}
 			catch(ex){
@@ -657,7 +662,9 @@ function j_hideSV(){
 	svTileLayer.setVisible(false);
 	document.getElementById("viewportstreetview").style.display = "none";
 	document.getElementById("smallContentPanel").style.display = "none";
-
+	document.getElementById("controliconquit").style.display = "none";
+	
+	L.Util.removeClass(L.Util.get("Toolbar"), "toolbar2");
 	document.getElementById("viewport").style.display = "";
 	j_resize();
 	j_map._onResize();
