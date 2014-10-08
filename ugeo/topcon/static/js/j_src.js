@@ -74,7 +74,12 @@ function j_addControls(){
 	//添加鼠标位置控件
 	j_map.addControl(new L.Controls.Position());
 	//添加导航条控件
-	j_map.addControl(new L.Controls.PanZoomBar({useLevelTag:false}));
+	j_map.addControl(new L.Controls.PanZoomBar({resParams:{
+            "1":9783.939620502539,//guo
+            "2":611.4962262814087,//sheng
+            "3":38.21851414258804,//shi
+            "4":1.194328566955876//jie
+        }}));
 }
 
 //初始化图层对象
@@ -507,7 +512,9 @@ function creatSVLastMarker(pos){
 			clickable:true,
 			visible:true,
 			labelable: true,
-
+			labelLineCharCount:6,
+			labelAnchor: new L.Loc(26, -15),
+			labelSize:null,
 			labelContent: '刚才在这里'
 		};
 		spriteMarkerOptions_dizuo.labelAnchor = new L.Loc(30, spriteMarkerOptions_dizuo.markerAnchor.y - spriteMarkerOptions_dizuo.markerSize.y -2);

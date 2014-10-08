@@ -101,9 +101,12 @@
 .leaflet-marker-label{
 	position: absolute;
     font: 12px arial,simsun;
-    
+    border: #8c8c8c 1px solid;
     text-align:center;
     white-space: nowrap;
+	background-color: #ffffff;
+    color: #4d4d4d;
+	padding: 1px;
 }
 
 .leaflet-label {
@@ -310,7 +313,7 @@ display: none;
 .leaflet-control-panzoombar .pancontrol-right,
 .leaflet-control-panzoombar .pancontrol-top,
 .leaflet-control-panzoombar .pancontrol-bottom{
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position: 0px 0px;
     width:44px;
     overflow:hidden;
@@ -361,7 +364,7 @@ display: none;
     width:21px;
     height:21px;
     overflow:hidden;
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position:0px 0px;
 }
 .zoomcontrol .zoominbt{
@@ -391,7 +394,7 @@ display: none;
     width:10px;
     left:18px;
     overflow:hidden;
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position:-23px -226px;
 }
 .barcontrol .sliderbartop{
@@ -399,7 +402,7 @@ display: none;
     width:8px;
     left:19px;
     overflow:hidden;
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position:-33px -226px;
 }
 .barcontrol .sliderbt{
@@ -408,7 +411,7 @@ display: none;
     height:11px;
     left:13px;
     overflow:hidden;
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position:0px -309px;
 }
 .barcontrol .leveltag-1,
@@ -420,7 +423,7 @@ display: none;
     height:21px;
     left:34px;
     overflow:hidden;
-    background:url(./images/bd.png) no-repeat;
+    background:url(./images/baidu.png) no-repeat;
     background-position:0px -443px;
 }
 .barcontrol .leveltag-2{
@@ -443,7 +446,7 @@ display: none;
 .leaflet-zoomdirect-pane-out .zoomdirect-tr,
 .leaflet-zoomdirect-pane-out .zoomdirect-bl{
     position:absolute;
-    background:url(./images/zoomdirect.gif) no-repeat;
+    background:url(./images/baidu2.gif) no-repeat;
     background-position: 0px 0px;
     width:7px;
     overflow:hidden;
@@ -480,7 +483,7 @@ display: none;
     display: '';
     font-family: Arial;
     font-size: 15px;
-    background-color:#A9D4F6;
+    background-color:#ddd;
 }
 .j-libs-control-toggle{
 	top:20px;

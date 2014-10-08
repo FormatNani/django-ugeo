@@ -906,7 +906,7 @@ L.Util = {
         }
     },
     
-    defaultImageUrl: 'data:image/gif;base64,R0lGODlhAQABAPcAAP//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+ZzP+Zmf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8AzP8Amf8AZv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZzMyZmcyZZsyZM8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wAzMwAmcwAZswAM8wAAJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZzJmZmZmZZpmZM5mZAJlm/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kAzJkAmZkAZpkAM5kAAGb//2b/zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZzGaZmWaZZmaZM2aZAGZm/2ZmzGZmmWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YAzGYAmWYAZmYAM2YAADP//zP/zDP/mTP/ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZzDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNmMzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMAzDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZzACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz/wAzzAAzmQAzZgAzMwAzAAAA/wAAzAAAmQAAZgAAMwAAAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAANgALAAAAAABAAEAAAgEALEFBAA7'
+    defaultImageUrl: ''
 };
 L.Util.TRANSITION = L.Util.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
 L.Util.ISTRANSITIONVALID = !!L.Util.TRANSITION;
@@ -7785,6 +7785,20 @@ L.Layers.TPCTileLayer = L.Layers.WMTS.extend({
         return encodeURI(resultUrl);
     }
 });
+L.Layers.TPCTileLayer = L.Layers.WMTS.extend({
+	_getTileUrl: function (z, y, x) {
+        if(!this.url)
+            return null;
+        var resultUrl = this.url;
+       
+		if(resultUrl.charAt(resultUrl.length - 1) != '/')
+			resultUrl += "/";
+		resultUrl += z + '/' + x + "/" + y + '.' + this.getFormat(null, false); 
+	
+            
+        return encodeURI(resultUrl);
+    }
+});
 
 L.Controls = {};
 /**
@@ -8126,7 +8140,7 @@ L.Controls.PanZoomBar = L.Controls.Base.extend({
         levelTagHeight:21,
         useLevelTag:true,
         useZoomBarTag:true,
-        levelTagResOptions:{
+        resParams:{
             "1":0.17578125,//guo
             "2":0.010986328125,//sheng
             "3":0.0006866455078125,//shi
@@ -8210,7 +8224,7 @@ L.Controls.PanZoomBar = L.Controls.Base.extend({
     
     _getLevelTagObject: function () {
         var resArr = this._map.getResolutions();
-        var key,i, len =resArr.length,  tmpRes, res,lastTag, level = -1, ltoptions = this.options.levelTagResOptions;
+        var key,i, len =resArr.length,  tmpRes, res,lastTag, level = -1, ltoptions = this.options.resParams;
             maxRes = resArr[0],
             minRes = resArr[resArr.length - 1];
         var resultObj = {};    
@@ -8509,8 +8523,8 @@ L.Controls.Position = L.Controls.Base.extend({
     _type : "L.Controls.Position",
     options: {
         position: 'bottomright',
-        headStr:"当前位置: ",
-        separator: " , ",
+        headStr:"X: ",
+        separator: " , Y: ",
         tailStr:"",
         digitsNum:4
     },
@@ -14094,7 +14108,7 @@ L.Map.DoubleClickZoom = L.HandlerBase.extend({
     _onDoubleClick: function (e) {
             L.DomEvent.stopPropagation(e);
             L.DomEvent.preventDefault(e);
-       // this.setView(e.point, this._limitZoom(this.getZoom() + 1));
+        this.setView(e.point, this._limitZoom(this.getZoom() + 1));
         
     }
 });
