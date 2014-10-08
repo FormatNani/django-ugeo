@@ -131,6 +131,7 @@ NDragToggle = L.Class.extend({
 			this.showNullSVLabel();
 		}
 		else{
+			var resStr = e;
 			var flash = document.getElementById("viewportstreetview");
 			if(!flash.callPano){
 				var interval = setInterval(function(){
