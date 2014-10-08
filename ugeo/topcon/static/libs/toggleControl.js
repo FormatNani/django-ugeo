@@ -365,7 +365,7 @@ JSVMarkerOptions = {
      * @description 是否设置标注可拖动
      */
     draggable: true,
-    zIndexOffset: 0
+    zIndexOffset: 9099
 };
 
 JCameraMarker = L.Ols.BgMarker.extend({
@@ -538,6 +538,21 @@ JToolBarControl = L.Controls.Base.extend({
 		
         
         return container;
+    }
+});
+
+L.Layers.RoomLayer = L.Layers.WMTS.extend({
+	_getTileUrl: function (z, y, x) {
+        if(!this.url)
+            return null;
+        var resultUrl = this.url;
+       
+		if(resultUrl.charAt(resultUrl.length - 1) != '/')
+			resultUrl += "/";
+		resultUrl += z + '/' + y + "_" + x + '.png'; 
+	
+            
+        return encodeURI(resultUrl);
     }
 });
 
