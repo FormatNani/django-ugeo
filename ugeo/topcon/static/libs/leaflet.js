@@ -7539,6 +7539,75 @@ L.Layers.WMS = L.Layers.TileBase.extend({
     }
     
 });
+L.Layers.ImageLayer = L.Layers.WMS.extend({
+
+    singleTile:true,
+    zoomResFixed:false,
+  
+    initialize: function(name, url, options) {
+        L.Layers.TileBase.prototype.initialize.call(this, name, url, options);
+       
+		this.layerType = "L.Layers.ImageLayer";
+    },
+   
+    setUrl: function (url) {
+        this.url = url;
+    },
+   
+    getTileUrlByExtent: function (bounds) {
+        return this._url;
+    },
+
+    _moveToSingleTile: function (bounds) {
+        L.Layers.Base.prototype._moveTo.call(this, bounds);
+        if(!this.getVisible()){
+            if(this._container && this._container.children.length > 0){
+                this._reset(true);
+            }
+            return;
+        }
+        var res = this._map.getResolution();
+        if(!bounds)
+            bounds = this._map.getExtent();
+        
+        var mapOffset = L.Util.getPosition(this._map._mapPane);
+        var tmpOffsetX = - mapOffset.x;
+        var tmpOffsetY = - mapOffset.y;
+        this._sIdKey = this._sIdKey ? (this._sIdKey + 1) : 1;
+        var tile = this._getSingleTile(bounds);
+        if(tile){
+			var tmpExt = this.maxExtent;
+			var size = new L.Loc(parseInt(tmpExt.getWidth() / res), parseInt(tmpExt.getHeight() / res));
+			tile.style.width = size.x + "px";
+			tile.style.height = size.y + "px";
+			var pos = this._map._pointToAbsPixel(this.tileOrigin);
+
+           // L.Util.setPosition(tile, new L.Loc(tmpOffsetX, tmpOffsetY));
+            L.Util.setPosition(tile, pos);
+            var key = "id:" + this._sIdKey;
+            tile.id = key;
+            //var fragment = document.createDocumentFragment();
+            this._tilesToLoad = 1;
+            this._tiles[key] = tile;
+            //fragment.appendChild(tile);
+            this._container.appendChild(tile);
+        }
+        
+        // if(this._tiles["id:" + (this._sIdKey - 1)]){
+            // this._removeTile(this._tiles["id:" + (this._sIdKey - 1)]);
+        // }
+        this._clearOtherTiles();
+        
+        return this;
+    },
+    
+    _getUrl: function (bounds, size) {
+        if(!this._map || !bounds || !size || !this.url)
+            return null;
+       return this.url;
+    }
+
+});
 
 /**
  * @class

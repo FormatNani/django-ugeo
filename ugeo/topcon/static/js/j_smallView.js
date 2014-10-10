@@ -178,7 +178,7 @@ NDragToggle = L.Class.extend({
 				tileSize:new L.Loc(256, 256),
 				tileOrigin:new L.Loc(0,256*5),
 				resolutions: [
-					1
+					4,2,1,0.5,0.25
 				],
 				format:"png",
 				//serverResolutions: serverResolutions,
@@ -207,13 +207,14 @@ NDragToggle = L.Class.extend({
 			
 		};
 		if(!this._roomLayer){
-			this._roomLayer = new L.Layers.RoomLayer("室内底图","http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles",res.layerParams);
+			this._roomLayer = new L.Layers.ImageLayer("室内底图","http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",res.layerParams);
+			//this._roomLayer = new L.Layers.RoomLayer("室内底图","http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles",res.layerParams);
 			this._preBasicLayer = this._map.basicLayer;
 			this._outParams = res.outParams;
 			this._map.addLayer(this._roomLayer);
 			this._map.setBasicLayer(this._roomLayer);
 			this._map.addControl(new L.Controls.Position());
-			
+			this.coordsImg = new L.Ols.CoordsImg("http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",new L.Extent(0,0,1920,1080))
 			this._pois = new Array();
 			this._pois.length = 0;
 			for(var i = 0; i < res.poiParams.length; i++){
@@ -230,6 +231,7 @@ NDragToggle = L.Class.extend({
 				this._pois.push(tmpMarker);
 			}
 			this._map.addOverlays(this._pois);
+		//	this._map.addOverlays(this.coordsImg);
 			this._toggleContainer.style.display = "none";
 			j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}
@@ -239,6 +241,8 @@ NDragToggle = L.Class.extend({
 	unsetRoomPano:function(){
 		if(this._pois){
 			this._map.removeOverlays(this._pois);
+			this._map.removeOverlays(this.coordsImg);
+			this.coordsImg = null;
 			this._pois.length = 0;
 			this._pois = null;
 		}
