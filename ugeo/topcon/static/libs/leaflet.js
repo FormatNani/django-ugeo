@@ -906,7 +906,7 @@ L.Util = {
         }
     },
     
-    defaultImageUrl: 'data:image/gif;base64,R0lGODlhAQABAPcAAP//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+ZzP+Zmf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8AzP8Amf8AZv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZzMyZmcyZZsyZM8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wAzMwAmcwAZswAM8wAAJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZzJmZmZmZZpmZM5mZAJlm/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kAzJkAmZkAZpkAM5kAAGb//2b/zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZzGaZmWaZZmaZM2aZAGZm/2ZmzGZmmWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YAzGYAmWYAZmYAM2YAADP//zP/zDP/mTP/ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZzDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNmMzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMAzDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZzACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz/wAzzAAzmQAzZgAzMwAzAAAA/wAAzAAAmQAAZgAAMwAAAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAANgALAAAAAABAAEAAAgEALEFBAA7'
+    defaultImageUrl: ''
 };
 L.Util.TRANSITION = L.Util.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
 L.Util.ISTRANSITIONVALID = !!L.Util.TRANSITION;
@@ -7539,6 +7539,75 @@ L.Layers.WMS = L.Layers.TileBase.extend({
     }
     
 });
+L.Layers.ImageLayer = L.Layers.WMS.extend({
+
+    singleTile:true,
+    zoomResFixed:false,
+  
+    initialize: function(name, url, options) {
+        L.Layers.TileBase.prototype.initialize.call(this, name, url, options);
+       
+		this.layerType = "L.Layers.ImageLayer";
+    },
+   
+    setUrl: function (url) {
+        this.url = url;
+    },
+   
+    getTileUrlByExtent: function (bounds) {
+        return this._url;
+    },
+
+    _moveToSingleTile: function (bounds) {
+        L.Layers.Base.prototype._moveTo.call(this, bounds);
+        if(!this.getVisible()){
+            if(this._container && this._container.children.length > 0){
+                this._reset(true);
+            }
+            return;
+        }
+        var res = this._map.getResolution();
+        if(!bounds)
+            bounds = this._map.getExtent();
+        
+        var mapOffset = L.Util.getPosition(this._map._mapPane);
+        var tmpOffsetX = - mapOffset.x;
+        var tmpOffsetY = - mapOffset.y;
+        this._sIdKey = this._sIdKey ? (this._sIdKey + 1) : 1;
+        var tile = this._getSingleTile(bounds);
+        if(tile){
+			var tmpExt = this.maxExtent;
+			var size = new L.Loc(parseInt(tmpExt.getWidth() / res), parseInt(tmpExt.getHeight() / res));
+			tile.style.width = size.x + "px";
+			tile.style.height = size.y + "px";
+			var pos = this._map._pointToAbsPixel(this.tileOrigin);
+
+           // L.Util.setPosition(tile, new L.Loc(tmpOffsetX, tmpOffsetY));
+            L.Util.setPosition(tile, pos);
+            var key = "id:" + this._sIdKey;
+            tile.id = key;
+            //var fragment = document.createDocumentFragment();
+            this._tilesToLoad = 1;
+            this._tiles[key] = tile;
+            //fragment.appendChild(tile);
+            this._container.appendChild(tile);
+        }
+        
+        // if(this._tiles["id:" + (this._sIdKey - 1)]){
+            // this._removeTile(this._tiles["id:" + (this._sIdKey - 1)]);
+        // }
+        this._clearOtherTiles();
+        
+        return this;
+    },
+    
+    _getUrl: function (bounds, size) {
+        if(!this._map || !bounds || !size || !this.url)
+            return null;
+       return this.url;
+    }
+
+});
 
 /**
  * @class
@@ -8126,7 +8195,7 @@ L.Controls.PanZoomBar = L.Controls.Base.extend({
         levelTagHeight:21,
         useLevelTag:true,
         useZoomBarTag:true,
-        levelTagResOptions:{
+        resParams:{
             "1":0.17578125,//guo
             "2":0.010986328125,//sheng
             "3":0.0006866455078125,//shi
@@ -8210,7 +8279,7 @@ L.Controls.PanZoomBar = L.Controls.Base.extend({
     
     _getLevelTagObject: function () {
         var resArr = this._map.getResolutions();
-        var key,i, len =resArr.length,  tmpRes, res,lastTag, level = -1, ltoptions = this.options.levelTagResOptions;
+        var key,i, len =resArr.length,  tmpRes, res,lastTag, level = -1, ltoptions = this.options.resParams;
             maxRes = resArr[0],
             minRes = resArr[resArr.length - 1];
         var resultObj = {};    
@@ -8509,8 +8578,8 @@ L.Controls.Position = L.Controls.Base.extend({
     _type : "L.Controls.Position",
     options: {
         position: 'bottomright',
-        headStr:"当前位置: ",
-        separator: " , ",
+        headStr:"X: ",
+        separator: " , Y: ",
         tailStr:"",
         digitsNum:4
     },
@@ -14094,7 +14163,7 @@ L.Map.DoubleClickZoom = L.HandlerBase.extend({
     _onDoubleClick: function (e) {
             L.DomEvent.stopPropagation(e);
             L.DomEvent.preventDefault(e);
-       // this.setView(e.point, this._limitZoom(this.getZoom() + 1));
+        this.setView(e.point, this._limitZoom(this.getZoom() + 1));
         
     }
 });

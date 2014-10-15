@@ -74,7 +74,12 @@ function j_addControls(){
 	//添加鼠标位置控件
 	j_map.addControl(new L.Controls.Position());
 	//添加导航条控件
-	j_map.addControl(new L.Controls.PanZoomBar({useLevelTag:false}));
+	j_map.addControl(new L.Controls.PanZoomBar({resParams:{
+            "1":9783.939620502539,//guo
+            "2":611.4962262814087,//sheng
+            "3":38.21851414258804,//shi
+            "4":1.194328566955876//jie
+        }}));
 }
 
 //初始化图层对象
@@ -463,6 +468,7 @@ function j_showSV(){
 		j_svLastMarker.setPosition(j_svMarker.getPosition());
 		j_svLastMarker.setVisible(true);
 	}
+	
 	j_setEvents();
 }
 function j_setEvents(){
@@ -507,7 +513,9 @@ function creatSVLastMarker(pos){
 			clickable:true,
 			visible:true,
 			labelable: true,
-
+			labelLineCharCount:6,
+			labelAnchor: new L.Loc(26, -15),
+			labelSize:null,
 			labelContent: '刚才在这里'
 		};
 		spriteMarkerOptions_dizuo.labelAnchor = new L.Loc(30, spriteMarkerOptions_dizuo.markerAnchor.y - spriteMarkerOptions_dizuo.markerSize.y -2);
@@ -607,7 +615,11 @@ function showSWFSV(e){
 					document.getElementById("viewport").style.display = "none";
 
 					j_tog.update(true);
-					j_tog._map.moveTo(j_lastSVMarkerLoc);;
+					j_tog._map.moveTo(j_lastSVMarkerLoc);
+					
+					document.getElementById("controliconquit").style.display = "";
+					
+					L.Util.addClass(L.Util.get("Toolbar"), "toolbar2");
 				}
 			}
 			catch(ex){
@@ -650,7 +662,9 @@ function j_hideSV(){
 	svTileLayer.setVisible(false);
 	document.getElementById("viewportstreetview").style.display = "none";
 	document.getElementById("smallContentPanel").style.display = "none";
-
+	document.getElementById("controliconquit").style.display = "none";
+	
+	L.Util.removeClass(L.Util.get("Toolbar"), "toolbar2");
 	document.getElementById("viewport").style.display = "";
 	j_resize();
 	j_map._onResize();

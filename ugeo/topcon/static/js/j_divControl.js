@@ -1,7 +1,4 @@
-﻿
-/**************************************
-********城市定位功能相关代码***********
-***************************************/
+﻿var j_fullScreenTag =false;
 function showDemoCity(cityName){
 	if(cityName == "beijing")
 	{
@@ -22,7 +19,7 @@ function j_setSize(domele, size){
 }
 function j_resize(){
 	var contentDiv = document.getElementById("contentPanel");
-	var contentDivSize = new L.Loc(contentDiv.clientWidth, contentDiv.clientHeight -28);
+	var contentDivSize = new L.Loc(contentDiv.clientWidth, contentDiv.clientHeight);
 	var mapDiv = L.Util.get("viewport");
 	var svDiv = L.Util.get("viewportstreetview");
 	j_setSize(mapDiv, contentDivSize);
@@ -35,6 +32,21 @@ function j_resize(){
 	}
 	//j_map._onResize();
 }
-
+function j_setFullScreen(){
+	var tag = !j_fullScreenTag;
+	if(tag){
+		L.Util.addClass(L.Util.get("contentPanel"), "topclsname");
+		L.Util.get("controliconfs").title="退出全屏";
+		L.Util.setClass(L.Util.get("controliconfs"),"controliconfs");
+		
+	}
+	else{
+		L.Util.removeClass(L.Util.get("contentPanel"), "topclsname");
+		L.Util.get("controliconfs").title="全屏";
+		L.Util.setClass(L.Util.get("controliconfs"),"controliconfs2");
+	}
+	j_fullScreenTag = tag;
+	j_resize();
+}
 function j_resizeMap(){
 }

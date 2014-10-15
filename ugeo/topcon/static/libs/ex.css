@@ -1,0 +1,44 @@
+.leaflet-camera-div{
+    position: absolute;
+    cursor:pointer;
+    border:0px;
+    background-color:transparent;
+    background-repeat: no-repeat no-repeat;
+	width:17px;
+	height:15px;
+	margin-left:-8px;
+	margin-top:-8px;
+    background: url(./images-extend/camera.png) no-repeat;
+	background-position: -3px -22px;
+	z-index:1;
+}
+.leaflet-camera-div:hover{
+	background-position: -26px -22px;
+}
+.controliconfs,.controliconfs2,.controliconquit{
+	position: absolute;
+	height: 27px;
+	width: 29px;
+	top: 0;
+	right: 0px;
+	cursor: pointer;
+	background: url(./images-extend/controlIcons.png) no-repeat;
+	background-position: -67px 0px;
+}
+.controliconfs2{
+	background-position: -40px -0px;
+}
+.controliconfs2:hover{
+	background-position: -40px -27px;
+}
+.controliconquit{
+	width: 27px;
+	right: 27px;
+	background-position: -124px 0px;
+}
+.controliconquit:hover{
+	background-position: -124px -27px;
+}
+.controliconfs:hover{
+	background-position: -67px -27px;
+}
