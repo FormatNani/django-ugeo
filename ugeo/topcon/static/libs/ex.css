@@ -10,12 +10,12 @@
 	margin-top:-8px;
     background: url(./images-extend/camera.png) no-repeat;
 	background-position: -3px -22px;
-	z-index:1;
+	z-index:0;
 }
 .leaflet-camera-div:hover{
 	background-position: -26px -22px;
 }
-.controliconfs,.controliconfs2,.controliconquit{
+.controliconfs,.controliconfs2,.controliconquit,.controliconquit2d{
 	position: absolute;
 	height: 27px;
 	width: 29px;
@@ -36,8 +36,16 @@
 	right: 27px;
 	background-position: -124px 0px;
 }
+.controliconquit2d{
+	width: 27px;
+	right: 27px;
+	background-position: -96px 0px;
+}
 .controliconquit:hover{
 	background-position: -124px -27px;
+}
+.controliconquit2d:hover{
+	background-position: -96px -27px;
 }
 .controliconfs:hover{
 	background-position: -67px -27px;

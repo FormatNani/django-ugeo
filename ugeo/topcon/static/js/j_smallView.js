@@ -54,7 +54,7 @@ NDragToggle = L.Class.extend({
         L.Util.stamp(this._toggleContainer);
 		var htmlStr = '<input type=button class=\"btn\" value=\"矢 量\" onclick=\"j_changeLayers(\'vec\');\" />';
 		htmlStr += '<input type=button class=\"btn\" value=\"影 像\" onclick=\"j_changeLayers(\'img\');\" />';
-		htmlStr += '<input type=button class=\"btn\" value=\"地 形\" onclick=\"j_changeLayers(\'ter\');\" />';
+		//htmlStr += '<input type=button class=\"btn\" value=\"地 形\" onclick=\"j_changeLayers(\'ter\');\" />';
 		this._toggleContainer.innerHTML = htmlStr;
 
 
@@ -66,7 +66,7 @@ NDragToggle = L.Class.extend({
 		for(var i = 0; i < layers.length; i++){
 			this._map.addLayer(layers[i]);
 		}
-		this._map.moveTo(j_tmpLoc, 13);
+		this._map.moveTo(j_tmpLoc, 15);
 		this._map.setMode("dragzoom");
 
 
@@ -171,32 +171,22 @@ NDragToggle = L.Class.extend({
 	
 	_preBasicLayer:null,
 	_outParams:null,
+	_layerParams:null,
 	setRoomPano:function(res){
+		
 		res = {
 			layerParams:{
-				
-				tileSize:new L.Loc(256, 256),
-				tileOrigin:new L.Loc(0,256*5),
+				basepic:"http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",
+				width:1280,
+				height:1280,
 				resolutions: [
 					4,2,1,0.5,0.25
-				],
-				format:"png",
-				//serverResolutions: serverResolutions,
-				serviceMode:"Restful",
-				units:"m",
-				projection:"EPSG:4490",
-				maxExtent:new L.Extent(0,0,256*5,256*5),
-				isBasicLayer:true,
-				visible:true
-	
+				]
 			},
 			poiParams:[
-				{id:"0",x:2*256+212 , y: 227, pano:"pics000130",title:"A景点"},
-				{id:"1",x:2*256+171 , y: 256+52, pano:"pics000130",title:"B景点"},
-				{id:"2",x:2*256+55 , y: 256+81, pano:"pics000130",title:"C景点"},
-				{id:"3",x:2*256+34 , y: 256*2+66, pano:"pics000130",title:"D景点"},
-				{id:"4",x:2*256+40 , y: 256*2+182, pano:"pics000130",title:"E景点"},
-				{id:"5",x:2*256+201 , y: 256*2+88, pano:"pics000130",title:"F景点"}
+				{id:"0",x:2*256+212 , y: 227, pano:"pics000354",title:"A景点"},
+				{id:"1",x:2*256+171 , y: 256+52, pano:"pics000353",title:"B景点"},
+				{id:"2",x:2*256+55 , y: 256+81, pano:"pics000343",title:"C景点"}
 			],
 			outParams:{
 				pano:"pics000130",
@@ -206,20 +196,35 @@ NDragToggle = L.Class.extend({
 			}
 			
 		};
-		if(!this._roomLayer){
-			this._roomLayer = new L.Layers.ImageLayer("室内底图","http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",res.layerParams);
-			//this._roomLayer = new L.Layers.RoomLayer("室内底图","http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles",res.layerParams);
+		if(!this._roomLayer){	
+			var lyrOptions = L.Util.extend(
+				{},
+				res.layerParams,
+				{
+					maxExtent:new L.Extent(0,0,res.layerParams.width,res.layerParams.height),
+					serviceMode:"Restful",
+					units:"m",
+					projection:"EPSG:4490",
+					isBasicLayer:true,
+					visible:true,
+					format:"png",
+					tileOrigin:new L.Loc(0,res.layerParams.height)
+				}
+			);
+			this._roomLayer = new L.Layers.ImageLayer("室内底图", res.layerParams.basepic, lyrOptions);
+
 			this._preBasicLayer = this._map.basicLayer;
 			this._outParams = res.outParams;
+			this._layerParams = res.layerParams;
 			this._map.addLayer(this._roomLayer);
 			this._map.setBasicLayer(this._roomLayer);
-			this._map.addControl(new L.Controls.Position());
-			this.coordsImg = new L.Ols.CoordsImg("http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",new L.Extent(0,0,1920,1080))
+			//this._map.addControl(new L.Controls.Position());
+
 			this._pois = new Array();
 			this._pois.length = 0;
 			for(var i = 0; i < res.poiParams.length; i++){
 				var tmpPoi = res.poiParams[i];
-				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, 256*5 - tmpPoi.y),{markerTitle:tmpPoi.title});
+				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, this._layerParams.height - tmpPoi.y),{markerTitle:tmpPoi.title});
 				tmpMarker.on("click", function(pano){
 					return function(){
 						var flash = document.getElementById("viewportstreetview");
@@ -235,30 +240,38 @@ NDragToggle = L.Class.extend({
 			this._toggleContainer.style.display = "none";
 			j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}
-		
+		//if(){
+			showSWFSV(res.poiParams[0].pano);
+		//}
+		document.getElementById("controliconquit2d").style.display = "none";
+		document.getElementById("controliconquit").style.display = "";
 	},
 	
 	unsetRoomPano:function(){
 		if(this._pois){
 			this._map.removeOverlays(this._pois);
-			this._map.removeOverlays(this.coordsImg);
-			this.coordsImg = null;
 			this._pois.length = 0;
 			this._pois = null;
 		}
-		if(this._preBasicLayer){
+		if(this._roomLayer && this._preBasicLayer){
 			this._map.setBasicLayer(this._preBasicLayer);
 			this._map.removeLayer(this._roomLayer);
 			this._roomLayer = null;
+			this._layerParams = null;
 		}
 		if(this._outParams){
-			j_svMarker.setPosition(new L.Loc(this._outParams.x,256*5 - this._outParams.y));
+			var tmpLoc = new L.Loc(this._outParams.x,this._outParams.y);
+			j_svMarker.setPosition(tmpLoc);
+			this._map.moveTo(tmpLoc);
+			j_map.moveTo(tmpLoc);
 			var flash = document.getElementById("viewportstreetview");
 						//todo
 			flash.callPano(this._outParams.pano);
 			this._outParams = null;
 		}
 		this._toggleContainer.style.display = "";
+		document.getElementById("controliconquit2d").style.display = "";
+		document.getElementById("controliconquit").style.display = "none";
 	},
 	
 	update:function (forceTag){
