@@ -9,7 +9,7 @@
     </neighbours>
     <pois>
         {% for poi in pois %}
-        <poi name="{{poi.name}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" pan="{{poi.pan}}" tilt="{{poi.tilt}}" />
+        <poi name="{{poi.name}}" exid="{{poi.exid}}" tag="{{poi.tag}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
         {% endfor %}
     </pois>
 </panoinfo>

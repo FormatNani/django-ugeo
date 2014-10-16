@@ -9,12 +9,10 @@
     <Layer name="layer">
         <StyleName>panopoint</StyleName>
         <Datasource>
-            <Parameter name="type">postgis</Parameter>
-            <Parameter name="host">localhost</Parameter>
-            <Parameter name="dbname">topcon</Parameter>
-            <Parameter name="user">_postgres</Parameter>
-            <Parameter name="password">_postgres</Parameter>
+            <Parameter name="type">sqlite</Parameter>
+            <Parameter name="file">topcon.db</Parameter>
             <Parameter name="table">panorama_panopointdata</Parameter>
+            <Parameter name="base">../../data/</Parameter>
             <Parameter name="geometry_field">geom</Parameter>
         </Datasource>
     </Layer>

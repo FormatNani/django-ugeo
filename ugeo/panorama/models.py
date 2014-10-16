@@ -41,6 +41,8 @@ class PanoLineData(models.Model):
 
 class PanoPoiData(models.Model):
   name = models.CharField(max_length=32)
+  exid = models.IntegerField()
+  tag = models.IntegerField()
   geom = models.PointField(srid=PANO_CONFIG["srid"], dim=2)
   altitude = models.DecimalField(**decimal_kwargs)
   attitude_x = models.DecimalField(**decimal_kwargs)

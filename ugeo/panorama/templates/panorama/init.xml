@@ -6,7 +6,9 @@
         <trace open="true"/>
     </global>
     <modules>
-        <ViewFinder path="{% get_static_prefix %}plugins/ViewFinder-1.0.swf" />
+        <ViewFinder path="{% get_static_prefix %}plugins/ViewFinder-1.0.swf">
+            <settings useCursor="true"/>
+        </ViewFinder>
         <DirectionFixer path="{% get_static_prefix %}plugins/DirectionFixer-1.0.swf"/>
     </modules>
     {% else %}

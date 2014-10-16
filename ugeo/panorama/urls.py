@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from djgeojson.views import GeoJSONLayerView
 from djgeojson.views import TiledGeoJSONLayerView
 from . import views
-from models import PanoPointData
+from models import PanoPointData, PanoPoiData
 
 
 class PanoGeoJSONView(GeoJSONLayerView):
@@ -19,7 +19,8 @@ urlpatterns = patterns('',
   url(r'^preview.html?', 'panorama.views.previewPano'),
 
   url(r'^points.geojson$', PanoGeoJSONView.as_view(model=PanoPointData), name='points'),
-  url(r'^points/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+).geojson$',
-    TiledGeoJSONLayerView.as_view(model=PanoPointData)),
+  # url(r'^points/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+).geojson$',
+  #   TiledGeoJSONLayerView.as_view(model=PanoPointData)),
+  url(r'^pois.geojson$', PanoGeoJSONView.as_view(model=PanoPoiData), name='pois'),
 
 )

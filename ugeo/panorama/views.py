@@ -1,3 +1,6 @@
+
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -62,16 +65,38 @@ def getPanoInfo(pano):
     return info
 
 def getPOIs(pano, distance = 2.0):
+    srid = PANO_CONFIG["srid"]
     pois = []
     qs = PanoPoiData.objects.filter(geom__distance_lt=(pano.geom, D(m=distance)))
     for pano in qs:
       poi = DotDict()
       poi.name = pano.name
+      poi.exid = pano.exid
+      poi.tag = pano.tag
       poi.lon = pano.geom.x
       poi.lat = pano.geom.y
       poi.alt = pano.altitude
       poi.direction = getDirection(pano)
+      # get near pano
+      point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=srid)
+      pano = getNearPano(point, distance=50.)
+      poi.pano = pano.name
       pois.append(poi)
+    # hard code, add sigm
+    if True:
+        poi = DotDict()
+        poi.name = "SIGM园区"
+        poi.exid = 0
+        poi.tag = 1
+        poi.lon = 12971459
+        poi.lat = 4834112
+        poi.alt = 20.
+        poi.direction = 0.
+        # get near pano
+        point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=srid)
+        pano = getNearPano(point, distance=50.)
+        poi.pano = pano.name
+        pois.append(poi)
     return pois
 
 ##### web services #####
