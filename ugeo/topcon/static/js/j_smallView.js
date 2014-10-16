@@ -13,20 +13,34 @@ function viewChanged(loadedId, tmpPan, tmpTilt, tmpfov, latitude, longitude, dir
 	j_svMarker._tmpTilt = tmpTilt;
 	j_svMarker._tmpPan = tmpPan;
 	j_svMarker._tmpfov = tmpfov;
-	j_tog._showSvMarker(new L.Loc(longitude, latitude));
+	if(j_tog._layerParams && (document.getElementById("controliconquit").style.display != "none")){
+		j_tog._showSvMarker(new L.Loc(longitude, j_tog._layerParams.height - latitude));
+	}
+	else
+		j_tog._showSvMarker(new L.Loc(longitude, latitude));
 	// j_svMarker.setPosition(new L.Loc(longitude, latitude));
 	// j_svMarker.setVisible(true);
 	// j_svClickMarker.setVisible(false);
 }
 function panoChanged(id, latitude, longitude, direction){
 	//j_svMarker.setPan(tmpPan);
-	j_tog._showSvMarker(new L.Loc(longitude, latitude));
-	j_tog._map.moveTo(new L.Loc(longitude, latitude));
+	var tmpLoc = new L.Loc(longitude, latitude);
+	if(j_tog._layerParams && (document.getElementById("controliconquit").style.display != "none")){
+		tmpLoc.y = j_tog._layerParams.height - latitude;
+	}
+	j_tog._showSvMarker(tmpLoc);
+	j_tog._map.moveTo(tmpLoc);
+	j_hidePoiInfo();
 	// j_svMarker.setPosition(new L.Loc(longitude, latitude));
 	// j_svMarker.setVisible(true);
 	// j_svClickMarker.setVisible(false);
 }
-
+function j_showPoiInfo(id){
+	document.getElementById("j_poidiv").style.display = "";
+}
+function j_hidePoiInfo(){
+	document.getElementById("j_poidiv").style.display = "none";
+}
 NDragToggle = L.Class.extend({
 	includes: L.Mixin.Events,
 	_minSize:new L.Loc(225, 102),
@@ -163,6 +177,7 @@ NDragToggle = L.Class.extend({
 	},
 
 	_showSvMarker:function(pos){
+		
 		j_svMarker.setPosition(pos);
 		j_svClickMarker.setVisible(false);
 
@@ -176,25 +191,30 @@ NDragToggle = L.Class.extend({
 		
 		res = {
 			layerParams:{
-				basepic:"http://127.0.0.1:8719/newmapserver4/rest/xpano/xpano/bin/tpk/tiles/a4.jpg",
-				width:1280,
-				height:1280,
+				basepic:"http://"+myhost+"/static/images/yq.jpg",
+				width:840,
+				height:600,
 				resolutions: [
-					4,2,1,0.5,0.25
+					1,0.5,0.25
 				]
 			},
 			poiParams:[
-				{id:"0",x:2*256+212 , y: 227, pano:"pics000354",title:"A景点"},
-				{id:"1",x:2*256+171 , y: 256+52, pano:"pics000353",title:"B景点"},
-				{id:"2",x:2*256+55 , y: 256+81, pano:"pics000343",title:"C景点"}
+				{id:"0",x:160 , y: 350, pano:"innerpano_000000",title:"A座4层1"},
+				{id:"1",x:190 , y: 395, pano:"innerpano_000001",title:"A座4层2"},
+				{id:"2",x:230 , y: 440, pano:"innerpano_000002",title:"A座4层3"},
+				{id:"3",x:300 , y: 270, pano:"innerpano_000003",title:"B座1层"},
+				{id:"4",x:350 , y: 340, pano:"innerpano_000004",title:"B座4层"},
+				{id:"5",x:520 , y: 110, pano:"innerpano_000005",title:"和合1层健身房"},
+				{id:"6",x:550 , y: 170, pano:"innerpano_000006",title:"和合1层大堂"},
+				{id:"7",x:590 , y: 230, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+				{id:"8",x:500 , y: 310, pano:"innerpano_000008",title:"篮 球 场"}
 			],
 			outParams:{
-				pano:"pics000130",
-				x: 12971392,
-				y: 4834169,
+				pano:"pics000187",
+				x: 12971542,
+				y: 4834097,
 				direction:2
 			}
-			
 		};
 		if(!this._roomLayer){	
 			var lyrOptions = L.Util.extend(
@@ -218,13 +238,19 @@ NDragToggle = L.Class.extend({
 			this._layerParams = res.layerParams;
 			this._map.addLayer(this._roomLayer);
 			this._map.setBasicLayer(this._roomLayer);
-			//this._map.addControl(new L.Controls.Position());
 
 			this._pois = new Array();
 			this._pois.length = 0;
 			for(var i = 0; i < res.poiParams.length; i++){
 				var tmpPoi = res.poiParams[i];
-				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, this._layerParams.height - tmpPoi.y),{markerTitle:tmpPoi.title});
+				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, this._layerParams.height - tmpPoi.y),{
+					markerTitle:tmpPoi.title,
+					labelable: true,
+					labelLineCharCount:6,
+					labelAnchor: new L.Loc(26, -7),
+					labelSize:null,
+					labelContent: tmpPoi.title
+				});
 				tmpMarker.on("click", function(pano){
 					return function(){
 						var flash = document.getElementById("viewportstreetview");
@@ -236,13 +262,12 @@ NDragToggle = L.Class.extend({
 				this._pois.push(tmpMarker);
 			}
 			this._map.addOverlays(this._pois);
-		//	this._map.addOverlays(this.coordsImg);
 			this._toggleContainer.style.display = "none";
 			j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}
-		//if(){
-			showSWFSV(res.poiParams[0].pano);
-		//}
+		
+		showSWFSV(res.poiParams[0].pano);
+		
 		document.getElementById("controliconquit2d").style.display = "none";
 		document.getElementById("controliconquit").style.display = "";
 	},

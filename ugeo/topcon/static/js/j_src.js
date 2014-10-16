@@ -14,11 +14,11 @@ var j_svTag = false;
 
 var myhost = "127.0.0.1:8000";
 myhost = "www.chinamap.me:8000";
+// myhost = "211.168.132.80:8000";
 var panoUrl = "http://"+myhost+"/pano/";
 
 var shineiPoiInfo = [
-	{id:"0",x:12971459 , y: 4834112,title:"SIGM集团"},
-	{id:"1",x:2*256+171 , y: 256+52, pano:"pics000130",title:"B景点"}
+	{id:"0",x:12971459 , y: 4834112,title:"SIGM园区"}
 ];
 //初始化地图对象
 function j_init(){
@@ -52,9 +52,9 @@ function j_addShiNeiPois(togtag){
 		var tmpPoi = shineiPoiInfo[i];
 		var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, tmpPoi.y),
 			{
-				//markerTitle:"点击进入室内",
-				markerTitle:tmpPoi.title,
-				labelable: false,
+				markerTitle:"点击进入室内",
+				//markerTitle:tmpPoi.title,
+				labelable: true,
 				labelLineCharCount:6,
 				labelAnchor: new L.Loc(26, -7),
 				labelSize:null,
@@ -90,7 +90,7 @@ function j_initMap(layers){
 //添加控件
 function j_addControls(){
 	//添加鼠标位置控件
-	j_map.addControl(new L.Controls.Position());
+	j_map.addControl(new L.Controls.Position({digitsNum:0}));
 	//添加导航条控件
 	j_map.addControl(new L.Controls.PanZoomBar({resParams:{
             "1":9783.939620502539,//guo
@@ -461,6 +461,7 @@ function j_initLayers(){
 
 function j_changeLayers2(type){
 	j_tog.unsetRoomPano();
+	j_hidePoiInfo();
 	j_hideSV();
 	j_changeLayers(type, j_map);
 	j_changeLayers(type, j_tog._map);
