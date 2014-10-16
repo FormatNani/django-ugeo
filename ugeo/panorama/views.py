@@ -200,7 +200,10 @@ def panoTile(request, pano_name, face, zoom, col, row, extension):
     #     return HttpResponse(content_type="image/jpeg", status=404)
 
     # using pano_store
-    pano_store = PanoTileStore.load(PANO_CONFIG["panostore"])
+    if pano_name.startswith('inner_'):
+        pano_store = PanoTileStore.load(PANO_CONFIG["panostore2"])
+    else:
+        pano_store = PanoTileStore.load(PANO_CONFIG["panostore"])
     tilecoord = TileCoord(int(col), int(row), int(zoom))
     tile = PanoTile(pano_name, int(face), tilecoord)
     tile = pano_store.get_tile(tile)

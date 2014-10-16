@@ -114,6 +114,7 @@ LEAFLET_CONFIG = {
 
 PANO_CONFIG = {
     'panostore':"sqlite3:"+os.path.join(BASE_DIR, 'data', 'topcon.db'),
+    'panostore2':"sqlite3:"+os.path.join(BASE_DIR, 'data', 'topcon2.db'),
     'srid':900913,
     'DEBUG':False,
 }
