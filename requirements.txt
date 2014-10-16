@@ -1,0 +1,12 @@
+pysqlite
+psycopg2
+simplejson
+lxml
+pillow
+shapely
+numpy
+django
+south
+six
+tornado
+supervisor

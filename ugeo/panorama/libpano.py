@@ -6,6 +6,8 @@ import os
 import math
 import numpy as np
 import PIL.Image
+PIL.Image.MAX_IMAGE_PIXELS = None
+
 import cStringIO
 
 import xml.dom.minidom
