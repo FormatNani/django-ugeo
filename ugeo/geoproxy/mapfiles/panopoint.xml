@@ -12,8 +12,8 @@
             <Parameter name="type">postgis</Parameter>
             <Parameter name="host">localhost</Parameter>
             <Parameter name="dbname">topcon</Parameter>
-            <Parameter name="user">_postgres</Parameter>
-            <Parameter name="password">_postgres</Parameter>
+            <Parameter name="user">postgres</Parameter>
+            <Parameter name="password">postgres</Parameter>
             <Parameter name="table">panorama_panopointdata</Parameter>
             <Parameter name="geometry_field">geom</Parameter>
         </Datasource>
