@@ -689,7 +689,7 @@ function j_hideSV(){
 	//	j_svLastMarker.setVisible(false);
 	//todo
 	//sv overlay
-	svTileLayer.setVisible(false);
+	//svTileLayer.setVisible(false);
 	if(!L.Util.Browser.ie)
 		document.getElementById("viewportstreetview").style.display = "none";
 	document.getElementById("smallContentPanel").style.display = "none";

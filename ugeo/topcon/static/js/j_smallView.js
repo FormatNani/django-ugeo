@@ -7,7 +7,7 @@ var j_tmpLoc = new L.Loc(12971392, 4834169);
 var anchor1 = new L.Loc(7, 600 - 335);
 var anchor2 = new L.Loc(825, 600 - 450);
 var loc1 = new L.Loc(12971302.3,4834079);
-var loc2 = new L.Loc(12971589,4834038);
+var loc2 = new L.Loc(12971598,4834038);
 var baseRes = (loc2.x - loc1.x)/(anchor2.x - anchor1.x);
 var baseMin = new L.Loc(loc1.x - anchor1.x *baseRes, loc1.y - anchor1.y *baseRes);
 var baseMax = new L.Loc(baseMin.x + 840 *baseRes, baseMin.y + 600 * baseRes);
@@ -19,13 +19,75 @@ var j_roomLayerParams = {
 			baseRes,baseRes/2,baseRes/4
 		]
 	};
+// var j_freePanels = {
+	// "0":{
+		// layerParams:j_roomLayerParams,
+		// poiParams:[
+			// {id:"0",x:12971357 , y: 4834043, pano:"innerpano_000000",title:"A座4层1"},
+			// {id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
+			// {id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"}
+		// ],
+		// outParams:{
+			// pano:"pics000187",
+			// x: 12971542,
+			// y: 4834097,
+			// direction:2
+		// }
+	// },
+	// "1":{
+		// layerParams:j_roomLayerParams,
+		// poiParams:[
+			// {id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
+			// {id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"}
+		// ],
+		// outParams:{
+			// pano:"pics000187",
+			// x: 12971542,
+			// y: 4834097,
+			// direction:2
+		// }
+	// },
+	// "2":{
+		// layerParams:j_roomLayerParams,
+		// poiParams:[
+			// {id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
+			// {id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
+			// {id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"}
+		// ],
+		// outParams:{
+			// pano:"pics000187",
+			// x: 12971542,
+			// y: 4834097,
+			// direction:2
+		// }
+	// },
+	// "3":{
+		// layerParams:j_roomLayerParams,
+		// poiParams:[
+			// {id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+		// ],
+		// outParams:{
+			// pano:"pics000187",
+			// x: 12971542,
+			// y: 4834097,
+			// direction:2
+		// }
+	// }
+// };
 var j_freePanels = {
 	"0":{
 		layerParams:j_roomLayerParams,
 		poiParams:[
-			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
-			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
-			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"}
+			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
+{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
+{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+
 		],
 		outParams:{
 			pano:"pics000187",
@@ -37,8 +99,16 @@ var j_freePanels = {
 	"1":{
 		layerParams:j_roomLayerParams,
 		poiParams:[
-			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
-			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"}
+			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
+{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
+{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+
 		],
 		outParams:{
 			pano:"pics000187",
@@ -50,9 +120,16 @@ var j_freePanels = {
 	"2":{
 		layerParams:j_roomLayerParams,
 		poiParams:[
-			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
-			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
-			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"}
+			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
+{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
+{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+
 		],
 		outParams:{
 			pano:"pics000187",
@@ -64,7 +141,16 @@ var j_freePanels = {
 	"3":{
 		layerParams:j_roomLayerParams,
 		poiParams:[
-			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
+{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
+{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+
 		],
 		outParams:{
 			pano:"pics000187",
@@ -329,7 +415,7 @@ NDragToggle = L.Class.extend({
 			}
 			this._map.addOverlays(this._pois);
 			this._toggleContainer.style.display = "none";
-			this._map.addControl(new L.Controls.Position());
+			// this._map.addControl(new L.Controls.Position());
 			if(basetag)
 				j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}

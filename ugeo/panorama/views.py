@@ -53,14 +53,15 @@ def getFreePanos(pano0, tag = 0, buf = 50.0):
         free.lat = pano.geom.y
         free.alt = pano.altitude
         free.direction = getDirection(pano)
-        # get near streetview pano
-        point = fromstr('POINT(%s %s)'%(free.lon, free.lat), srid=PANO_CONFIG["srid"])
-        panonear = None
-        it = 1
-        while panonear is None:
-            panonear = getNearPano(point, near=buf*it)
-            it = it + 1
-        free.pano = panonear.name
+        # # get near streetview pano
+        # point = fromstr('POINT(%s %s)'%(free.lon, free.lat), srid=PANO_CONFIG["srid"])
+        # panonear = None
+        # it = 1
+        # while panonear is None:
+        #     panonear = getNearPano(point, near=buf*it)
+        #     it = it + 1
+        # free.pano = panonear.name
+        free.pano = free.name
         frees.append(free)
     return frees
 
