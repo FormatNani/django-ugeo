@@ -14,8 +14,10 @@ function showDemoCity(cityName){
 	}
 }
 function j_setSize(domele, size){
-	domele.style.width = size.x + "px";
-	domele.style.height = size.y + "px";
+	if(domele && size){
+		domele.style.width = size.x + "px";
+		domele.style.height = size.y + "px";
+	}
 }
 function j_resize(){
 	var contentDiv = document.getElementById("contentPanel");

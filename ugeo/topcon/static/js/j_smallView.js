@@ -4,7 +4,96 @@
 var j_svMarker = null;
 var j_svClickMarker = null;
 var j_tmpLoc = new L.Loc(12971392, 4834169);
-
+var anchor1 = new L.Loc(7, 600 - 335);
+var anchor2 = new L.Loc(825, 600 - 450);
+var loc1 = new L.Loc(12971302.3,4834079);
+var loc2 = new L.Loc(12971589,4834038);
+var baseRes = (loc2.x - loc1.x)/(anchor2.x - anchor1.x);
+var baseMin = new L.Loc(loc1.x - anchor1.x *baseRes, loc1.y - anchor1.y *baseRes);
+var baseMax = new L.Loc(baseMin.x + 840 *baseRes, baseMin.y + 600 * baseRes);
+var j_roomLayerParams = {
+		basepic:"http://"+myhost+"/static/images/yq.jpg",
+		width:(baseMax.x - baseMin.x),
+		height:(baseMax.y - baseMin.y),
+		resolutions: [
+			baseRes,baseRes/2,baseRes/4
+		]
+	};
+var j_freePanels = {
+	"0":{
+		layerParams:j_roomLayerParams,
+		poiParams:[
+			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"}
+		],
+		outParams:{
+			pano:"pics000187",
+			x: 12971542,
+			y: 4834097,
+			direction:2
+		}
+	},
+	"1":{
+		layerParams:j_roomLayerParams,
+		poiParams:[
+			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"}
+		],
+		outParams:{
+			pano:"pics000187",
+			x: 12971542,
+			y: 4834097,
+			direction:2
+		}
+	},
+	"2":{
+		layerParams:j_roomLayerParams,
+		poiParams:[
+			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"}
+		],
+		outParams:{
+			pano:"pics000187",
+			x: 12971542,
+			y: 4834097,
+			direction:2
+		}
+	},
+	"3":{
+		layerParams:j_roomLayerParams,
+		poiParams:[
+			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
+		],
+		outParams:{
+			pano:"pics000187",
+			x: 12971542,
+			y: 4834097,
+			direction:2
+		}
+	}
+};
+function j_getFreePanel(id, baseTag){
+	if(baseTag === true){
+		return j_freePanels[id.toString()];
+	}
+	var result = null;
+	for(var k in j_freePanels){
+		if(j_freePanels.hasOwnProperty(k)){
+			var tmpFP = j_freePanels[k];
+			if(tmpFP.poiParams){
+				for(var i = 0; i < tmpFP.poiParams.length; i++){
+					if(parseInt(tmpFP.poiParams[i].id) == parseInt(id)){
+						result = tmpFP;
+						return result;
+					}
+				}
+			}
+		}
+	}
+	return result;
+}
 function viewChanged(loadedId, tmpPan, tmpTilt, tmpfov, latitude, longitude, direction){
 	if(j_svMarker.dragTag)
 		return;
@@ -14,7 +103,7 @@ function viewChanged(loadedId, tmpPan, tmpTilt, tmpfov, latitude, longitude, dir
 	j_svMarker._tmpPan = tmpPan;
 	j_svMarker._tmpfov = tmpfov;
 	if(j_tog._layerParams && (document.getElementById("controliconquit").style.display != "none")){
-		j_tog._showSvMarker(new L.Loc(longitude, j_tog._layerParams.height - latitude));
+		j_tog._showSvMarker(new L.Loc(longitude, latitude));
 	}
 	else
 		j_tog._showSvMarker(new L.Loc(longitude, latitude));
@@ -25,11 +114,12 @@ function viewChanged(loadedId, tmpPan, tmpTilt, tmpfov, latitude, longitude, dir
 function panoChanged(id, latitude, longitude, direction){
 	//j_svMarker.setPan(tmpPan);
 	var tmpLoc = new L.Loc(longitude, latitude);
-	if(j_tog._layerParams && (document.getElementById("controliconquit").style.display != "none")){
-		tmpLoc.y = j_tog._layerParams.height - latitude;
-	}
+	// if(j_tog._layerParams && (document.getElementById("controliconquit").style.display != "none")){
+		// tmpLoc.y = j_tog._layerParams.height - latitude;
+	// }
 	j_tog._showSvMarker(tmpLoc);
 	j_tog._map.moveTo(tmpLoc);
+	
 	j_hidePoiInfo();
 	// j_svMarker.setPosition(new L.Loc(longitude, latitude));
 	// j_svMarker.setVisible(true);
@@ -80,7 +170,7 @@ NDragToggle = L.Class.extend({
 		for(var i = 0; i < layers.length; i++){
 			this._map.addLayer(layers[i]);
 		}
-		this._map.moveTo(j_tmpLoc, 16);
+		this._map.moveTo(j_tmpLoc, 18);
 		this._map.setMode("dragzoom");
 
 
@@ -130,7 +220,7 @@ NDragToggle = L.Class.extend({
 	showNullSVLabel:function(){
 		if(j_svMarker){
 			if(!this._nullLabel){
-				this._nullLabel = new L.Ols.Label(j_svMarker.getPosition(),{content:"当前位置无街景",offset:new L.Loc(-40, 0)} );
+				this._nullLabel = new L.Ols.Label(j_svMarker.getPosition(),{content:"当前位置无街景",offset:new L.Loc(-40, 0)});
 				this._map.addOverlays(this._nullLabel);
 			}
 			this._nullLabel.setPosition(j_svMarker.getPosition());
@@ -177,58 +267,34 @@ NDragToggle = L.Class.extend({
 	},
 
 	_showSvMarker:function(pos){
-
+		
 		j_svMarker.setPosition(pos);
 		j_svClickMarker.setVisible(false);
 
 		j_svMarker.setVisible(true);
 	},
-
+	
 	_preBasicLayer:null,
 	_outParams:null,
 	_layerParams:null,
-	setRoomPano:function(res){
-
-		res = {
-			layerParams:{
-				basepic:"http://"+myhost+"/static/images/yq.jpg",
-				width:840,
-				height:600,
-				resolutions: [
-					1,0.5,0.25
-				]
-			},
-			poiParams:[
-				{id:"0",x:160 , y: 350, pano:"innerpano_000000",title:"A座4层1"},
-				{id:"1",x:190 , y: 395, pano:"innerpano_000001",title:"A座4层2"},
-				{id:"2",x:230 , y: 440, pano:"innerpano_000002",title:"A座4层3"},
-				{id:"3",x:300 , y: 270, pano:"innerpano_000003",title:"B座1层"},
-				{id:"4",x:350 , y: 340, pano:"innerpano_000004",title:"B座4层"},
-				{id:"5",x:520 , y: 110, pano:"innerpano_000005",title:"和合1层健身房"},
-				{id:"6",x:550 , y: 170, pano:"innerpano_000006",title:"和合1层大堂"},
-				{id:"7",x:590 , y: 230, pano:"innerpano_000007",title:"和合二层羽毛球场"},
-				{id:"8",x:500 , y: 310, pano:"innerpano_000008",title:"篮 球 场"}
-			],
-			outParams:{
-				pano:"pics000187",
-				x: 12971542,
-				y: 4834097,
-				direction:2
-			}
-		};
-		if(!this._roomLayer){
+	setRoomPano:function(id, basetag){
+		var res = j_getFreePanel(id, basetag);
+		if(!res){
+			return;
+		}
+		if(!this._roomLayer){	
 			var lyrOptions = L.Util.extend(
 				{},
 				res.layerParams,
 				{
-					maxExtent:new L.Extent(0,0,res.layerParams.width,res.layerParams.height),
+					maxExtent:new L.Extent(baseMin.x,baseMin.y,baseMax.x,baseMax.y),
 					serviceMode:"Restful",
 					units:"m",
 					projection:"EPSG:4490",
 					isBasicLayer:true,
 					visible:true,
 					format:"png",
-					tileOrigin:new L.Loc(0,res.layerParams.height)
+					tileOrigin:new L.Loc(baseMin.x,baseMax.y)
 				}
 			);
 			this._roomLayer = new L.Layers.ImageLayer("室内底图", res.layerParams.basepic, lyrOptions);
@@ -243,7 +309,7 @@ NDragToggle = L.Class.extend({
 			this._pois.length = 0;
 			for(var i = 0; i < res.poiParams.length; i++){
 				var tmpPoi = res.poiParams[i];
-				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, this._layerParams.height - tmpPoi.y),{
+				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, tmpPoi.y),{
 					markerTitle:tmpPoi.title,
 					labelable: true,
 					labelLineCharCount:6,
@@ -258,29 +324,36 @@ NDragToggle = L.Class.extend({
 						flash.callPano(pano);
 					};
 				}(tmpPoi.pano));
-
+				
 				this._pois.push(tmpMarker);
 			}
 			this._map.addOverlays(this._pois);
 			this._toggleContainer.style.display = "none";
-			j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
+			this._map.addControl(new L.Controls.Position());
+			if(basetag)
+				j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}
-
+		
 		showSWFSV(res.poiParams[0].pano);
-
+		
 		document.getElementById("controliconquit2d").style.display = "none";
 		document.getElementById("controliconquit").style.display = "";
+		j_setShiNeiPoisVisible(false);
 	},
-
+	
 	unsetRoomPano:function(){
+		j_setShiNeiPoisVisible(true);
 		if(this._pois){
 			this._map.removeOverlays(this._pois);
 			this._pois.length = 0;
 			this._pois = null;
 		}
 		if(this._roomLayer && this._preBasicLayer){
+			
 			this._map.setBasicLayer(this._preBasicLayer);
+			this._roomLayer.isBasicLayer = false;
 			this._map.removeLayer(this._roomLayer);
+			//j_changeLayers("img");
 			this._roomLayer = null;
 			this._layerParams = null;
 		}
@@ -298,7 +371,7 @@ NDragToggle = L.Class.extend({
 		document.getElementById("controliconquit2d").style.display = "";
 		document.getElementById("controliconquit").style.display = "none";
 	},
-
+	
 	update:function (forceTag){
 		this._maxSize = new L.Loc(this.parentPanel.clientWidth - 2, this.parentPanel.clientHeight -2);
         this._parentPanelPos = new L.Loc(this.parentPanel.offsetLeft, this.parentPanel.offsetTop);
