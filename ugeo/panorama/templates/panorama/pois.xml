@@ -4,7 +4,7 @@
     <pano name="{{% poi.pano %}}" />
     <pois>
         {% for poi in pois %}
-        <poi name="{{poi.name}}" exid="{{poi.exid}}" tag="{{poi.tag}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
+        <poi name="{{poi.name}}" title="{{poi.name}}" tag="{{poi.tag}}" exid="{{poi.exid}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
         {% endfor %}
     </pois>
 </poilist>

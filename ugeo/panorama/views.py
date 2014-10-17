@@ -10,44 +10,89 @@ from django.contrib.gis.geos import *
 
 # Create your views here.
 from panorama import PANO_CONFIG
-from models import PanoPointData, PanoLineData, PanoPoiData, PanoTileData
+from models import PanoPointData, PanoLineData, PanoPoiData, PanoTileData, PanoFreeData
 from libpano import *
 import cStringIO
 
 ##### functions #####
 def getNeighbours(pano, distance = 2.0, minDistanceBetweenPanos=3.0):
+    neightour_names = []
+    # qs = PanoLineData.objects.filter(geom__touches=pano.geom)
+    qs = PanoLineData.objects.filter(geom__distance_lt=(pano.geom, D(m=distance)))
+    for line in qs:
+        if (line.start != pano.name) and (not line.start in neightour_names):
+            neightour_names.append(line.start)
+        if (line.end != pano.name) and (not line.end in neightour_names):
+            neightour_names.append(line.end)
 
-  neightour_names = []
+    neighbours = []
+    qs = PanoPointData.objects.filter(name__in=neightour_names).distance(pano.geom).order_by('distance')
+    for pano in qs:
+        if pano.distance > minDistanceBetweenPanos:
+            neighbour = DotDict()
+            neighbour.name = pano.name
+            neighbour.lon = pano.geom.x
+            neighbour.lat = pano.geom.y
+            neighbour.alt = pano.altitude
+            neighbour.direction = getDirection(pano)
+            neighbours.append(neighbour)
+    return neighbours
 
-  # qs = PanoLineData.objects.filter(geom__touches=pano.geom)
-  qs = PanoLineData.objects.filter(geom__distance_lt=(pano.geom, D(m=distance)))
-  for line in qs:
-    if (line.start != pano.name) and (not line.start in neightour_names):
-      neightour_names.append(line.start)
-    if (line.end != pano.name) and (not line.end in neightour_names):
-      neightour_names.append(line.end)
+def getFreePanos(pano0, tag = 0, buf = 50.0):
+    frees = []
+    qs = PanoFreeData.objects.filter(geom__distance_lt=(pano0.geom, D(m=buf)))
+    for pano in qs:
+        if pano.name == pano0.name:
+            continue
+        free = DotDict()
+        free.name = pano.name
+        free.title = pano.title
+        free.tag = tag
+        free.exid = int(pano.name[10:])
+        free.lon = pano.geom.x
+        free.lat = pano.geom.y
+        free.alt = pano.altitude
+        free.direction = getDirection(pano)
+        # get near streetview pano
+        point = fromstr('POINT(%s %s)'%(free.lon, free.lat), srid=PANO_CONFIG["srid"])
+        panonear = None
+        it = 1
+        while panonear is None:
+            panonear = getNearPano(point, near=buf*it)
+            it = it + 1
+        free.pano = panonear.name
+        frees.append(free)
+    return frees
 
-  neighbours = []
-  qs = PanoPointData.objects.filter(name__in=neightour_names).distance(pano.geom).order_by('distance')
-  for pano in qs:
-    if pano.distance > minDistanceBetweenPanos:
-        neighbour = DotDict()
-        neighbour.name = pano.name
-        neighbour.lon = pano.geom.x
-        neighbour.lat = pano.geom.y
-        neighbour.alt = pano.altitude
-        neighbour.direction = getDirection(pano)
-        neighbours.append(neighbour)
-
-  return neighbours
+def getPOIs(pano0, buf = 20.0):
+    pois = []
+    qs = PanoPoiData.objects.filter(geom__distance_lt=(pano0.geom, D(m=buf)))
+    for pano in qs:
+        poi = DotDict()
+        poi.name = pano.name
+        poi.exid = pano.exid
+        poi.tag = 1
+        poi.lon = pano.geom.x
+        poi.lat = pano.geom.y
+        poi.alt = pano.altitude
+        # get near streetview pano
+        point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=PANO_CONFIG["srid"])
+        panonear = None
+        it = 1
+        while panonear is None:
+            panonear = getNearPano(point, near=buf*it)
+            it = it + 1
+        poi.pano = panonear.name
+        pois.append(poi)
+    return pois
 
 # for xflip = true
 # convert to position angle
 def getDirection(pano):
     return float(pano.attitude_z)+180.0
 
-def getNearPano(point,  distance = 5.0):
-    qs = PanoPointData.objects.filter(geom__distance_lt=(point, D(m=distance))).distance(point).order_by('distance')
+def getNearPano(point,  near = 5.0):
+    qs = PanoPointData.objects.filter(geom__distance_lt=(point, D(m=near))).distance(point).order_by('distance')
     if len(qs) > 0:
         return qs[0]
     else:
@@ -60,63 +105,92 @@ def getPanoInfo(pano):
     info.lat = pano.geom.y
     info.alt = pano.altitude
     info.direction = getDirection(pano)
-    info.nadir = "true"
-    info.zenith = "true"
+    info.nadir = "false"
+    info.zenith = "false"
     return info
-
-def getPOIs(pano, distance = 2.0):
-    srid = PANO_CONFIG["srid"]
-    pois = []
-    qs = PanoPoiData.objects.filter(geom__distance_lt=(pano.geom, D(m=distance)))
-    for pano in qs:
-      poi = DotDict()
-      poi.name = pano.name
-      poi.exid = pano.exid
-      poi.tag = pano.tag
-      poi.lon = pano.geom.x
-      poi.lat = pano.geom.y
-      poi.alt = pano.altitude
-      poi.direction = getDirection(pano)
-      # get near pano
-      point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=srid)
-      pano = getNearPano(point, distance=50.)
-      poi.pano = pano.name
-      pois.append(poi)
-    # hard code, add sigm
-    if not pano.name.startswith('innerpano_'):
-        poi = DotDict()
-        poi.name = "SIGM园区"
-        poi.exid = 0
-        poi.tag = 1
-        poi.lon = 12971459
-        poi.lat = 4834112
-        poi.alt = 20.
-        poi.direction = 180.
-        # get near pano
-        point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=srid)
-        pano = getNearPano(point, distance=50.)
-        poi.pano = pano.name
-        pois.append(poi)
-    return pois
 
 ##### web services #####
 
-def init(request):
-  # pano = get_object_or_404(PanoPointData, name=pano_name)
-  return render(request, 'panorama/init.xml', {'debug':PANO_CONFIG["DEBUG"]})
+def panoInit(request):
+    # pano = get_object_or_404(PanoPointData, name=pano_name)
+    return render(request, 'panorama/init.xml', {'debug':PANO_CONFIG["DEBUG"]})
 
-def imageDescription(request, pano_name, face):
-  pano = get_object_or_404(PanoPointData, name=pano_name)
-  deepZoomDes = DeepZoomImageDescriptor(pano.cubic_size, pano.cubic_size)
-  output = cStringIO.StringIO()
-  content = deepZoomDes.save()
-  return HttpResponse(content, content_type="text/xml", status=200)
-
-def nearPano(request, lon, lat):
+def panoInfo(request, pano_name):
     try:
+        buffer = float(request.REQUEST['buffer'])
+        distance = float(request.REQUEST['distance'])
+        # isFree = int(request.REQUEST['free'])
+    except:
+        buf = 50.0
+        distance = 2.0
+        # isFree = 0
+    if pano_name.startswith('innerpano_'):
+        pano = get_object_or_404(PanoFreeData, name=pano_name)
+    else:
+        pano = get_object_or_404(PanoPointData, name=pano_name)
+    info = getPanoInfo(pano)
+    if pano_name.startswith('innerpano_'):
+        neighbours = []
+        pois = []
+        frees = getFreePanos(pano, 1, buf)
+    else:
+        neighbours = getNeighbours(pano, distance)
+        pois = getPOIs(pano, buf)
+        frees = getFreePanos(pano, 0, buf)
+    return render(request, 'panorama/pano.xml',
+                    {
+                        'pano':info,
+                        'neighbours':neighbours,
+                        'frees':frees,
+                        'pois':pois,
+                    })
+
+# 只获取街景上的全景点，不获取离散全景点
+def panoInfo2(request, lon, lat):
+    try:
+        near = float(request.REQUEST['near'])
+        buf = float(request.REQUEST['buffer'])
         distance = float(request.REQUEST['distance'])
     except:
-        distance = 5.0
+        near = 5.0
+        buf = 20.
+        distance = 2.0
+    lon = float(lon)
+    lat = float(lat)
+    srid = PANO_CONFIG["srid"]
+    if srid == 900913:
+        point = WebMercatorProjection.project(LonLat(lon, lat))
+        point = fromstr('POINT(%s %s)'%(point.x, point.y), srid=srid)
+    else:
+        point = fromstr('POINT(%s %s)'%(lon, lat), srid=srid)
+    pano = getNearPano(point, near)
+    info = getPanoInfo(pano)
+    neighbours = getNeighbours(pano, distance)
+    frees = getFreePanos(pano, 0, buf)
+    pois = getPOIs(pano, buf)
+    return render(request, 'panorama/pano.xml',
+                    {
+                        'pano':info,
+                        'neighbours':neighbours,
+                        'frees':frees,
+                        'pois':pois,
+                    })
+
+def panoImageInfo(request, pano_name, face):
+    if pano_name.startswith('innerpano_'):
+        pano = get_object_or_404(PanoFreeData, name=pano_name)
+    else:
+        pano = get_object_or_404(PanoPointData, name=pano_name)
+    deepZoomDes = DeepZoomImageDescriptor(pano.cubic_size, pano.cubic_size)
+    output = cStringIO.StringIO()
+    content = deepZoomDes.save()
+    return HttpResponse(content, content_type="text/xml", status=200)
+
+def panoNear(request, lon, lat):
+    try:
+        near = float(request.REQUEST['distance'])
+    except:
+        near = 5.0
     try:
         callback = request.REQUEST['callback']
     except KeyError:
@@ -129,7 +203,7 @@ def nearPano(request, lon, lat):
         point = fromstr('POINT(%s %s)'%(point.x, point.y), srid=srid)
     else:
         point = fromstr('POINT(%s %s)'%(lon, lat), srid=srid)
-    pano = getNearPano(point, distance)
+    pano = getNearPano(point, near)
     if pano:
         content = pano.name
     else:
@@ -143,51 +217,13 @@ def nearPano(request, lon, lat):
 
     return HttpResponse(content=content, content_type=content_type, status=200)
 
-def panoInfo(request, pano_name):
-    try:
-        distance = float(request.REQUEST['distance'])
-    except:
-        distance = 2.0
-    pano = get_object_or_404(PanoPointData, name=pano_name)
-    info = getPanoInfo(pano)
-    neighbours = getNeighbours(pano, distance)
-    pois = getPOIs(pano)
-    return render(request, 'panorama/pano.xml',
-                    {
-                        'pano':info,
-                        'neighbours':neighbours,
-                        'pois':pois,
-                    })
-
-def panoInfo2(request, lon, lat):
-    try:
-        buffer = float(request.REQUEST['buffer'])
-        distance = float(request.REQUEST['distance'])
-    except:
-        buffer = 5.0
-        distance = 2.0
-    lon = float(lon)
-    lat = float(lat)
-    srid = PANO_CONFIG["srid"]
-    if srid == 900913:
-        point = WebMercatorProjection.project(LonLat(lon, lat))
-        point = fromstr('POINT(%s %s)'%(point.x, point.y), srid=srid)
-    else:
-        point = fromstr('POINT(%s %s)'%(lon, lat), srid=srid)
-    pano = getNearPano(point, distance)
-    info = getPanoInfo(pano)
-    neighbours = getNeighbours(pano, distance)
-    pois = getPOIs(pano)
-    return render(request, 'panorama/pano.xml',
-                    {
-                        'pano':info,
-                        'neighbours':neighbours,
-                        'pois':pois,
-                    })
-
 def panoPOI(request, pano_name):
+    try:
+        buf = float(request.REQUEST['buffer'])
+    except:
+        buf = 20.0
     pano = get_object_or_404(PanoPointData, name=pano_name)
-    pois = getPOIs(pano)
+    pois = getPOIs(pano, buf)
     return render(request, 'panorama/poi.xml',{'pois':pois})
 
 def panoTile(request, pano_name, face, zoom, col, row, extension):
@@ -215,9 +251,9 @@ def panoTile(request, pano_name, face, zoom, col, row, extension):
 
 
 ##### preview #####
-def previewPano(request):
-  #pano_name = request.REQUEST['pano']
-  # camera = request.REQUEST['camera']
-  # pano = get_object_or_404(PanoPointData, name=pano_name)
-  #return render(request, 'panorama/preview.html', {'pano_name': pano_name})
-  return render(request, 'panorama/preview.html')
+def panoPreview(request):
+    #pano_name = request.REQUEST['pano']
+    # camera = request.REQUEST['camera']
+    # pano = get_object_or_404(PanoPointData, name=pano_name)
+    #return render(request, 'panorama/preview.html', {'pano_name': pano_name})
+    return render(request, 'panorama/preview.html')

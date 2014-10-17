@@ -7,9 +7,14 @@
         <neighbour name="{{p.name}}" direction="{{p.direction}}" latitude="{{p.lat}}" longitude="{{p.lon}}" altitude="{{p.alt}}" />
         {% endfor %}
     </neighbours>
+    <freepanos>
+        {% for free in frees %}
+        <freepano name="{{free.name}}" title="{{free.title}}" tag="{{free.tag}}" exid="{{free.exid}}" pano="{{free.pano}}" latitude="{{free.lat}}" longitude="{{free.lon}}" altitude="{{free.alt}}"/>
+        {% endfor %}
+    </freepanos>
     <pois>
         {% for poi in pois %}
-        <poi name="{{poi.name}}" exid="{{poi.exid}}" tag="{{poi.tag}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
+        <poi name="{{poi.name}}" title="{{poi.name}}" tag="{{poi.tag}}" exid="{{poi.exid}}" pano="{{poi.pano}}" latitude="{{poi.lat}}" longitude="{{poi.lon}}" altitude="{{poi.alt}}" />
         {% endfor %}
     </pois>
 </panoinfo>

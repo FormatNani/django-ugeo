@@ -42,13 +42,23 @@ class PanoLineData(models.Model):
 class PanoPoiData(models.Model):
   name = models.CharField(max_length=32)
   exid = models.IntegerField()
-  tag = models.IntegerField()
+  geom = models.PointField(srid=PANO_CONFIG["srid"], dim=2)
+  altitude = models.DecimalField(**decimal_kwargs)
+  objects = models.GeoManager()
+
+  def __unicode__(self):
+    return self.name
+
+class PanoFreeData(models.Model):
+  name = models.CharField(max_length=32, unique=True)
+  title = models.CharField(max_length=32)
   geom = models.PointField(srid=PANO_CONFIG["srid"], dim=2)
   altitude = models.DecimalField(**decimal_kwargs)
   attitude_x = models.DecimalField(**decimal_kwargs)
   attitude_y = models.DecimalField(**decimal_kwargs)
   attitude_z = models.DecimalField(**decimal_kwargs)
   timestamp = models.CharField(max_length=20)
+  cubic_size = models.IntegerField()
   objects = models.GeoManager()
 
   def __unicode__(self):
