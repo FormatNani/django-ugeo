@@ -80,7 +80,7 @@ NDragToggle = L.Class.extend({
 		for(var i = 0; i < layers.length; i++){
 			this._map.addLayer(layers[i]);
 		}
-		this._map.moveTo(j_tmpLoc, 15);
+		this._map.moveTo(j_tmpLoc, 16);
 		this._map.setMode("dragzoom");
 
 
@@ -130,7 +130,7 @@ NDragToggle = L.Class.extend({
 	showNullSVLabel:function(){
 		if(j_svMarker){
 			if(!this._nullLabel){
-				this._nullLabel = new L.Ols.Label(j_svMarker.getPosition(),{content:"当前位置无街景",offset:new L.Loc(-40, 0),} );
+				this._nullLabel = new L.Ols.Label(j_svMarker.getPosition(),{content:"当前位置无街景",offset:new L.Loc(-40, 0)} );
 				this._map.addOverlays(this._nullLabel);
 			}
 			this._nullLabel.setPosition(j_svMarker.getPosition());
@@ -177,18 +177,18 @@ NDragToggle = L.Class.extend({
 	},
 
 	_showSvMarker:function(pos){
-		
+
 		j_svMarker.setPosition(pos);
 		j_svClickMarker.setVisible(false);
 
 		j_svMarker.setVisible(true);
 	},
-	
+
 	_preBasicLayer:null,
 	_outParams:null,
 	_layerParams:null,
 	setRoomPano:function(res){
-		
+
 		res = {
 			layerParams:{
 				basepic:"http://"+myhost+"/static/images/yq.jpg",
@@ -216,7 +216,7 @@ NDragToggle = L.Class.extend({
 				direction:2
 			}
 		};
-		if(!this._roomLayer){	
+		if(!this._roomLayer){
 			var lyrOptions = L.Util.extend(
 				{},
 				res.layerParams,
@@ -258,20 +258,20 @@ NDragToggle = L.Class.extend({
 						flash.callPano(pano);
 					};
 				}(tmpPoi.pano));
-				
+
 				this._pois.push(tmpMarker);
 			}
 			this._map.addOverlays(this._pois);
 			this._toggleContainer.style.display = "none";
 			j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
 		}
-		
+
 		showSWFSV(res.poiParams[0].pano);
-		
+
 		document.getElementById("controliconquit2d").style.display = "none";
 		document.getElementById("controliconquit").style.display = "";
 	},
-	
+
 	unsetRoomPano:function(){
 		if(this._pois){
 			this._map.removeOverlays(this._pois);
@@ -298,7 +298,7 @@ NDragToggle = L.Class.extend({
 		document.getElementById("controliconquit2d").style.display = "";
 		document.getElementById("controliconquit").style.display = "none";
 	},
-	
+
 	update:function (forceTag){
 		this._maxSize = new L.Loc(this.parentPanel.clientWidth - 2, this.parentPanel.clientHeight -2);
         this._parentPanelPos = new L.Loc(this.parentPanel.offsetLeft, this.parentPanel.offsetTop);
