@@ -18,7 +18,7 @@ myhost = "www.chinamap.me:8000";
 var panoUrl = "http://"+myhost+"/pano/";
 
 var shineiPoiInfo = [
-	{id:"0",x:12971459 , y: 4834112,title:"SIGM园区"}
+	{id:"0",x:12971459 , y: 4834112,title:"SIGM园区室内全景"}
 ];
 //初始化地图对象
 function j_init(){
@@ -38,7 +38,7 @@ function j_init(){
 	j_changeLayers('vec');
 
 	svTileLayer.setVisible(false);
-	
+
 	j_addShiNeiPois();
 	j_addShiNeiPois(true);
 
@@ -75,7 +75,7 @@ function j_addShiNeiPois(togtag){
 		j_map.addOverlays(j_shineiPois);
 	else
 		j_tog._map.addOverlays(j_shineiPoisTog);
-	
+
 }
 
 function j_initMap(layers){
@@ -638,9 +638,9 @@ function showSWFSV(e){
 
 					j_tog.update(true);
 					j_tog._map.moveTo(j_lastSVMarkerLoc);
-					
-					
-					
+
+
+
 					L.Util.addClass(L.Util.get("Toolbar"), "toolbar2");
 				}
 			}
@@ -686,7 +686,7 @@ function j_hideSV(){
 	document.getElementById("smallContentPanel").style.display = "none";
 	document.getElementById("controliconquit2d").style.display = "none";
 	document.getElementById("controliconquit").style.display = "none";
-	
+
 	L.Util.removeClass(L.Util.get("Toolbar"), "toolbar2");
 	document.getElementById("viewport").style.display = "";
 	j_resize();

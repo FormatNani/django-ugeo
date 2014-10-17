@@ -83,7 +83,7 @@ def getPOIs(pano, distance = 2.0):
       poi.pano = pano.name
       pois.append(poi)
     # hard code, add sigm
-    if True:
+    if not pano.name.startswith('innerpano_'):
         poi = DotDict()
         poi.name = "SIGM园区"
         poi.exid = 0
@@ -91,7 +91,7 @@ def getPOIs(pano, distance = 2.0):
         poi.lon = 12971459
         poi.lat = 4834112
         poi.alt = 20.
-        poi.direction = 0.
+        poi.direction = 180.
         # get near pano
         point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=srid)
         pano = getNearPano(point, distance=50.)
