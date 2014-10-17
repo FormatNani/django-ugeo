@@ -47,6 +47,7 @@ function j_setFullScreen(){
 	}
 	j_fullScreenTag = tag;
 	j_resize();
+
 }
 function j_resizeMap(){
 }

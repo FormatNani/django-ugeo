@@ -89,7 +89,7 @@
 		<div style="position:absolute; left:10px;">
 			<input type=button class="btn" value="矢 量" onclick="j_changeLayers2('vec');" />
 			<input type=button class="btn" value="影 像" onclick="j_changeLayers2('img');" />
-			<input type=button class="btn" value="地 形" onclick="j_changeLayers2('ter');" />
+			<!--<input type=button class="btn" value="地 形" onclick="j_changeLayers2('ter');" />-->
 			<input type=button class="btn" value="街 景" onclick="j_ChangeSV();" />
 		</div>
 		<!--<div style="position:absolute; right:30px;">
@@ -97,7 +97,8 @@
 	</DIV>
     <DIV id="viewport" class="viewport"></DIV>
     <DIV id="controlicons" class="controlicons">
-		<div id="controliconquit" class="controliconquit" title="退出街景" onclick="j_ChangeSV();"  style="display:none;"></div>
+		<div id="controliconquit" class="controliconquit" title="返回室外" onclick="j_tog.unsetRoomPano();"  style="display:none;"></div>
+		<div id="controliconquit2d" class="controliconquit2d" title="退出街景" onclick="j_ChangeSV();"  style="display:none;"></div>
 		<div id="controliconfs" class="controliconfs2" title="全屏" onclick="j_setFullScreen();"></div>
 	</DIV>
 	
@@ -108,7 +109,8 @@
 			<param name="allowScriptAccess" value="always" />
 			<param name="allowfullscreen" value="true">
 			<param name="flashvars" value="xml=init.xml">
-			<embed src="viewportstreetview.swf" quality="high" bgcolor="#869ca7"
+			<param name="wmode" value="transparent">
+			<embed src="xpano.swf" quality="high" bgcolor="#869ca7"
 						  width="100%" height="100%" name="viewportstreetview" align="middle"
 						 play="true" loop="false" quality="high" allowScriptAccess="always"
 						 type="application/x-shockwave-flash">
@@ -122,9 +124,32 @@
 		</DIV>
 		<DIV id="smallToggleDiv" class="smallToggleDiv">
 			<DIV id="dragDiv" class="dragDiv"></DIV>
-			<DIV id="anchorDiv" class="anchorDiv"></DIV>
+			<DIV id="anchorDiv" class="anchorDiv" style="display:none;"></DIV>
 		</DIV>
 	</DIV>
+	
+	<div id="j_poidiv" class="fold-panel-container" style="left: 10px; top: 49px; height: 86px; width: 300px;display:none;">
+		<img src="./libs/images/popup-close.png" style="position:absolute;right:5px;top:5px;cursor:pointer;z-index:9999;" onclick="j_hidePoiInfo();"/>
+		<div role="contentContainer" class="fold-panel-content" style="position: absolute; padding: 6px 0px; height: auto; top: 0px;">
+			<div style="position: relative; z-index: 2;"></div>
+			<div class="content-wapper" style="height: auto;">
+				<div class="pano_popup">        
+					<div class="pano_poi_header clearfix">            
+						<a href="javascript:void(0);" class="title" id="poi_title">         SCMA园区            </a>            
+						<a href="http://www.topconchina.com/" class="detail_link gray" target="_blank" data-action="detail">详情&gt;&gt;</a>  
+					</div>
+					<div class="content_line"></div>
+					<div class="pano_poi_content">
+							<span class="pano_poi_icon pano_poi_icon_phone"></span>                    
+							<span class="type_name">电话：</span>                    
+							<span id="poi_telInfo" class="type_cont">(010)67892799</span>                
+						                
+					</div>                                    
+				</div>
+			</div>
+			<div class="fold-panel-bg" style="background-color: rgba(0, 0, 0, 0.8); height: 0px; width: 300px; left: 0px;"></div>
+		</div>
+	</div>
 </div>
 <!--地图窗口_end-->
 

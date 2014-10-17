@@ -15,7 +15,7 @@
 .leaflet-camera-div:hover{
 	background-position: -26px -22px;
 }
-.controliconfs,.controliconfs2,.controliconquit{
+.controliconfs,.controliconfs2,.controliconquit,.controliconquit2d{
 	position: absolute;
 	height: 27px;
 	width: 29px;
@@ -36,9 +36,107 @@
 	right: 27px;
 	background-position: -124px 0px;
 }
+.controliconquit2d{
+	width: 27px;
+	right: 27px;
+	background-position: -96px 0px;
+}
 .controliconquit:hover{
 	background-position: -124px -27px;
 }
+.controliconquit2d:hover{
+	background-position: -96px -27px;
+}
 .controliconfs:hover{
 	background-position: -67px -27px;
+}
+
+.fold-panel-container {
+z-index:888;
+background-color: #000;
+opacity:0.8;
+overflow: hidden;
+height: 0;
+position: absolute;
+left:10px;
+}
+.pano_popup {
+width: 300px;
+font-size: 12px;
+color: #c5cbd6;
+}
+.content-wapper {
+z-index: 10;
+position: relative;
+}
+.clearfix:before, .clearfix:after {
+display: table;
+content: "";
+}
+.clearfix {
+zoom: 1;
+}
+.pano_poi_header {
+margin: 9px 14px 0;
+}
+.pano_poi_header .title {
+float: left;
+width: 210px;
+margin-right: 6px;
+font-size: 12px;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.pano_popup a {
+text-decoration: none;
+color: #c5cbd6;
+}
+.pano_popup .gray {
+color: #71757b;
+}
+p {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}
+.pano_popup .content_line {
+margin: 14px;
+height: 1px;
+font-size: 0;
+line-height: 0;
+background: #000;
+_background: #222;
+}
+.pano_poi_content {
+margin-bottom: 6px;
+}
+.pano_poi_content li span {
+float: left;
+}
+.pano_poi_icon_phone {
+background-position: -56px -1px;
+}
+.pano_poi_icon {
+background-image: url(./images/bdphone.png);
+_background-image: url(./images/bdphone.png);
+margin-top: -1px;
+margin-right: 5px;
+margin-left: 15px;
+width: 14px;
+height: 14px;
+display: inline-block;
+vertical-align: middle;
+}
+.pano_poi_content li span {
+float: left;
+}
+ul, ol {
+list-style: none;
+}
+.pano_poi_content .type_cont {
+width: 206px;
 }

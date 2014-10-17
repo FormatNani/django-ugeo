@@ -14,8 +14,12 @@ var j_svTag = false;
 
 var myhost = "127.0.0.1:8000";
 myhost = "www.chinamap.me:8000";
+// myhost = "211.168.132.80:8000";
 var panoUrl = "http://"+myhost+"/pano/";
 
+var shineiPoiInfo = [
+	{id:"0",x:12971459 , y: 4834112,title:"SIGM园区"}
+];
 //初始化地图对象
 function j_init(){
 
@@ -27,39 +31,53 @@ function j_init(){
 	j_initLayers();
 
 
-	j_initMap([imgLayer2,imgAnnoLayer2,vecLayer2,vecAnnoLayer2,terLayer2,terAnnoLayer2,SVTileLayer2]);
-	j_tog._initMap([imgLayer,imgAnnoLayer,vecLayer,vecAnnoLayer,terLayer,terAnnoLayer,svTileLayer]);
+	// j_initMap([imgLayer2,imgAnnoLayer2,vecLayer2,vecAnnoLayer2,terLayer2,terAnnoLayer2,SVTileLayer2]);
+	// j_tog._initMap([imgLayer,imgAnnoLayer,vecLayer,vecAnnoLayer,terLayer,terAnnoLayer,svTileLayer]);
+	j_initMap([imgLayer2,imgAnnoLayer2,vecLayer2,vecAnnoLayer2,SVTileLayer2]);
+	j_tog._initMap([imgLayer,imgAnnoLayer,vecLayer,vecAnnoLayer,svTileLayer]);
 	j_changeLayers('vec');
 
 	svTileLayer.setVisible(false);
-	var spriteMarkerOptions = {
-		imgUrl : "./images/sv.png",
-		shadowUrl:"",
-		markerSize:new L.Loc(24, 42),
-		imgOffset:new L.Loc(216,72),
-		markerAnchor:new L.Loc(12,42),
-		dialogAnchor:new L.Loc(0, -41),
-		markerTitle:"我的标注",
-		draggable:false,
-		clickable:false
-	};
-	var spriteMarkerOptions_dizuo = {
-		imgUrl : L.Icon.Default.imagePath +"tx.png",
-		shadowUrl:"",
-		markerSize:new L.Loc(20, 35),
-		imgOffset:new L.Loc(120,130),
-		markerAnchor:new L.Loc(10,30),
-		dialogAnchor:new L.Loc(0,-41),
-		markerTitle:"我的标注",
-		draggable:false,
-		clickable:false
-	};
-	//-288px -72px39.780769942963126	116.525348303829690
-	var marker = new JSVMarker(j_tmpLoc);
+	
+	j_addShiNeiPois();
+	j_addShiNeiPois(true);
 
-	//j_initRouteLayer();
-//	j_map.addOverlays([marker]);
 }
+var j_shineiPois = null;
+var j_shineiPoisTog = null;
+function j_addShiNeiPois(togtag){
+	j_shineiPois = j_shineiPois || new Array();
+	j_shineiPoisTog = j_shineiPoisTog || new Array();
+	for(var i = 0; i < shineiPoiInfo.length; i++){
+		var tmpPoi = shineiPoiInfo[i];
+		var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, tmpPoi.y),
+			{
+				markerTitle:"点击进入室内",
+				//markerTitle:tmpPoi.title,
+				labelable: true,
+				labelLineCharCount:6,
+				labelAnchor: new L.Loc(26, -7),
+				labelSize:null,
+				labelContent: tmpPoi.title
+			}
+		);
+		tmpMarker.on("click", function(id){
+			return function(){
+				j_tog.setRoomPano(id);
+			};
+		}(tmpPoi.id));
+		if(!togtag)
+			j_shineiPois.push(tmpMarker);
+		else
+			j_shineiPoisTog.push(tmpMarker);
+	}
+	if(!togtag)
+		j_map.addOverlays(j_shineiPois);
+	else
+		j_tog._map.addOverlays(j_shineiPoisTog);
+	
+}
+
 function j_initMap(layers){
 	j_map = new L.Map("viewport");
 	for(var i = 0; i < layers.length; i++){
@@ -72,7 +90,7 @@ function j_initMap(layers){
 //添加控件
 function j_addControls(){
 	//添加鼠标位置控件
-	j_map.addControl(new L.Controls.Position());
+	j_map.addControl(new L.Controls.Position({digitsNum:0}));
 	//添加导航条控件
 	j_map.addControl(new L.Controls.PanZoomBar({resParams:{
             "1":9783.939620502539,//guo
@@ -442,6 +460,8 @@ function j_initLayers(){
 }
 
 function j_changeLayers2(type){
+	j_tog.unsetRoomPano();
+	j_hidePoiInfo();
 	j_hideSV();
 	j_changeLayers(type, j_map);
 	j_changeLayers(type, j_tog._map);
@@ -460,15 +480,16 @@ function j_showSV(){
 	//todo
 	//sv overlay
 	svTileLayer.setVisible(true);
-	if(!j_svLastMarker){
-		if(j_tog && j_tog._map && j_svMarker)
-			creatSVLastMarker(j_svMarker.getPosition());
+	if(false){
+		if(!j_svLastMarker){
+			if(j_tog && j_tog._map && j_svMarker)
+				creatSVLastMarker(j_svMarker.getPosition());
+		}
+		if(j_svLastMarker && j_svMarker){
+			j_svLastMarker.setPosition(j_svMarker.getPosition());
+			j_svLastMarker.setVisible(true);
+		}
 	}
-	if(j_svLastMarker && j_svMarker){
-		j_svLastMarker.setPosition(j_svMarker.getPosition());
-		j_svLastMarker.setVisible(true);
-	}
-	
 	j_setEvents();
 }
 function j_setEvents(){
@@ -500,6 +521,7 @@ function creatSVMarker(pos){
 //164,164
 var j_svLastMarker;
 function creatSVLastMarker(pos){
+	return;
 	if(j_svLastMarker == null){
 		var spriteMarkerOptions_dizuo = {
 			imgUrl : L.Icon.Default.imagePath +"tx.png",
@@ -601,7 +623,7 @@ function showSWFSV(e){
 	else{
 		document.getElementById("viewportstreetview").style.display = "";
 		document.getElementById("smallContentPanel").style.display = "";
-
+		document.getElementById("controliconquit2d").style.display = "";
 		//var flash = (navigator.appName.indexOf ("Microsoft") !=-1)?window[getFlashName()]:document[getFlashName()];
 
 		//viewportstreetview.callPano(resStr);
@@ -617,7 +639,7 @@ function showSWFSV(e){
 					j_tog.update(true);
 					j_tog._map.moveTo(j_lastSVMarkerLoc);
 					
-					document.getElementById("controliconquit").style.display = "";
+					
 					
 					L.Util.addClass(L.Util.get("Toolbar"), "toolbar2");
 				}
@@ -662,6 +684,7 @@ function j_hideSV(){
 	svTileLayer.setVisible(false);
 	document.getElementById("viewportstreetview").style.display = "none";
 	document.getElementById("smallContentPanel").style.display = "none";
+	document.getElementById("controliconquit2d").style.display = "none";
 	document.getElementById("controliconquit").style.display = "none";
 	
 	L.Util.removeClass(L.Util.get("Toolbar"), "toolbar2");

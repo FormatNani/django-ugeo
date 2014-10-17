@@ -104,9 +104,11 @@
     border: #8c8c8c 1px solid;
     text-align:center;
     white-space: nowrap;
-	background-color: #ffffff;
-    color: #4d4d4d;
+	background-color: #222;
+	opacity:0.8;
+    color: #c5cbd6;
 	padding: 1px;
+	z-index:1;
 }
 
 .leaflet-label {
@@ -208,7 +210,7 @@
 .leaflet-objects-pane { z-index: 3; }
 .leaflet-overlay-pane { z-index: 4; }
 .leaflet-shadow-pane { z-index: 5; }
-.leaflet-marker-pane { z-index: 6; }
+.leaflet-marker-pane { z-index: 16; }
 .leaflet-tmp-pane { z-index: 7; }
 .leaflet-popup-pane { z-index: 8; }
 .leaflet-label-pane { z-index: 9; }
