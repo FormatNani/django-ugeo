@@ -9,7 +9,7 @@ from libpano import *
 if __name__ == "__main__":
     #ds_pano = "pg:dbname='topcon' host='127.0.0.1' port='5432' user='postgres' password='postgres'"
     ds_pano = "sqlite3:../data/topcon2.db"
-    path = "/Users/sw/项目/拓普康项目/data/sroucedata/topcon-interpano-201408/pre0/"
+    path = "../data/sroucedata/topcon-interpano-201408/temp/"
     srid = 900913
     xflip = True
 

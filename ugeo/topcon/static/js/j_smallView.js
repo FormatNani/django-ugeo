@@ -4,13 +4,15 @@
 var j_svMarker = null;
 var j_svClickMarker = null;
 var j_tmpLoc = new L.Loc(12971392, 4834169);
-var anchor1 = new L.Loc(7, 600 - 335);
-var anchor2 = new L.Loc(825, 600 - 450);
-var loc1 = new L.Loc(12971302.3,4834079);
-var loc2 = new L.Loc(12971598,4834038);
+var basew = 934
+var baseh = 613
+var loc1 = new L.Loc(12971272.4, 4834190.3);
+var loc2 = new L.Loc(12971627.4, 4833958.2);
+var anchor1 = new L.Loc(0, baseh);
+var anchor2 = new L.Loc(basew, 0);
 var baseRes = (loc2.x - loc1.x)/(anchor2.x - anchor1.x);
 var baseMin = new L.Loc(loc1.x - anchor1.x *baseRes, loc1.y - anchor1.y *baseRes);
-var baseMax = new L.Loc(baseMin.x + 840 *baseRes, baseMin.y + 600 * baseRes);
+var baseMax = new L.Loc(baseMin.x + basew *baseRes, baseMin.y + baseh * baseRes);
 var j_roomLayerParams = {
 		basepic:"http://"+myhost+"/static/images/yq.jpg",
 		width:(baseMax.x - baseMin.x),
@@ -77,85 +79,97 @@ var j_roomLayerParams = {
 var j_freePanels = {
 	"0":{
 		layerParams:j_roomLayerParams,
+		initid:10,
+		poiArray:[0, 1, 2, 9, 10],
 		poiParams:[
-			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
-			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
-			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
-{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
-			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
-{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
-			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
-			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
-{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
-
+			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"},
+			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"},
+			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"},
+			{id:"9",x:12971357 , y: 4834073, pano:"innerpano_000009",title:"A座后门"},
+			{id:"10",x:12971352 , y: 4834041, pano:"innerpano_000010",title:"A座大堂"}
 		],
 		outParams:{
-			pano:"pics000187",
-			x: 12971542,
-			y: 4834097,
+			pano:"pics000379",
+			x: 12971331.6606,
+			y: 4834028.57476,
 			direction:2
 		}
 	},
 	"1":{
 		layerParams:j_roomLayerParams,
+		initid:3,
+		poiArray:[3, 4],
 		poiParams:[
-			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
-			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
-			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
-{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
-			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
-{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
-			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
-			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
-{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
-
+			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"},
+			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"},
+			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"},
+			{id:"9",x:12971357 , y: 4834073, pano:"innerpano_000009",title:"A座后门"},
+			{id:"10",x:12971352 , y: 4834041, pano:"innerpano_000010",title:"A座大堂"}
 		],
 		outParams:{
-			pano:"pics000187",
-			x: 12971542,
-			y: 4834097,
+			pano:"pics000392",
+			x: 12971438.412,
+			y: 4834095.91282,
 			direction:2
 		}
 	},
 	"2":{
 		layerParams:j_roomLayerParams,
+		initid:6,
+		poiArray:[5, 6, 7],
 		poiParams:[
-			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
-			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
-			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
-{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
-			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
-{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
-			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
-			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
-{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
-
+			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"},
+			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"},
+			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"},
+			{id:"9",x:12971357 , y: 4834073, pano:"innerpano_000009",title:"A座后门"},
+			{id:"10",x:12971352 , y: 4834041, pano:"innerpano_000010",title:"A座大堂"}
 		],
 		outParams:{
-			pano:"pics000187",
-			x: 12971542,
-			y: 4834097,
+			pano:"pics000418",
+			x: 12971479.9429,
+			y: 4834117.22128,
 			direction:2
 		}
 	},
 	"3":{
 		layerParams:j_roomLayerParams,
+		initid:8,
+		poiArray:[8],
 		poiParams:[
-			{id:"0",x:12971358 , y: 4834072, pano:"innerpano_000000",title:"A座4层1"},
-			{id:"1",x:12971372 , y: 4834031, pano:"innerpano_000001",title:"A座4层2"},
-			{id:"2",x:12971396 , y: 4834043, pano:"innerpano_000002",title:"A座4层3"},
-{id:"3",x:12971404 , y: 4834095, pano:"innerpano_000003",title:"B座1层"},
-			{id:"4",x:12971415 , y: 4834102, pano:"innerpano_000004",title:"B座4层"},
-{id:"5",x:12971498 , y: 4834154, pano:"innerpano_000005",title:"和合1层健身房"},
-			{id:"6",x:12971515 , y: 4834125, pano:"innerpano_000006",title:"和合1层大堂"},
-			{id:"7",x:12971495 , y: 4834136, pano:"innerpano_000007",title:"和合二层羽毛球场"},
-{id:"8",x:12971481 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"}
-
+			{id:"0",x:12971348 , y: 4834064, pano:"innerpano_000000",title:"A座4层1"},
+			{id:"1",x:12971363 , y: 4834024, pano:"innerpano_000001",title:"A座4层2"},
+			{id:"2",x:12971381 , y: 4834035, pano:"innerpano_000002",title:"A座4层3"},
+			{id:"3",x:12971400 , y: 4834086, pano:"innerpano_000003",title:"B座1层"},
+			{id:"4",x:12971408 , y: 4834090, pano:"innerpano_000004",title:"B座4层"},
+			{id:"5",x:12971487 , y: 4834150, pano:"innerpano_000005",title:"和合1层健身房"},
+			{id:"6",x:12971512 , y: 4834119, pano:"innerpano_000006",title:"和合1层大堂"},
+			{id:"7",x:12971498 , y: 4834131, pano:"innerpano_000007",title:"和合二层羽毛球场"},
+			{id:"8",x:12971487 , y: 4834086, pano:"innerpano_000008",title:"篮 球 场"},
+			{id:"9",x:12971357 , y: 4834073, pano:"innerpano_000009",title:"A座后门"},
+			{id:"10",x:12971352 , y: 4834041, pano:"innerpano_000010",title:"A座大堂"}
 		],
 		outParams:{
-			pano:"pics000187",
-			x: 12971542,
-			y: 4834097,
+			pano:"pics000422",
+			x: 12971493.7095,
+			y: 4834094.69167,
 			direction:2
 		}
 	}
@@ -168,14 +182,22 @@ function j_getFreePanel(id, baseTag){
 	for(var k in j_freePanels){
 		if(j_freePanels.hasOwnProperty(k)){
 			var tmpFP = j_freePanels[k];
-			if(tmpFP.poiParams){
-				for(var i = 0; i < tmpFP.poiParams.length; i++){
-					if(parseInt(tmpFP.poiParams[i].id) == parseInt(id)){
+			if(tmpFP.poiArray) {
+				for (var i = 0; i < tmpFP.poiArray.length; i++) {
+					if(tmpFP.poiArray[i] == parseInt(id)) {
 						result = tmpFP;
 						return result;
 					}
 				}
 			}
+			// if(tmpFP.poiParams){
+			// 	for(var i = 0; i < tmpFP.poiParams.length; i++){
+			// 		if(parseInt(tmpFP.poiParams[i].id) == parseInt(id)){
+			// 			result = tmpFP;
+			// 			return result;
+			// 		}
+			// 	}
+			// }
 		}
 	}
 	return result;
@@ -205,7 +227,7 @@ function panoChanged(id, latitude, longitude, direction){
 	// }
 	j_tog._showSvMarker(tmpLoc);
 	j_tog._map.moveTo(tmpLoc);
-	
+
 	j_hidePoiInfo();
 	// j_svMarker.setPosition(new L.Loc(longitude, latitude));
 	// j_svMarker.setVisible(true);
@@ -353,13 +375,13 @@ NDragToggle = L.Class.extend({
 	},
 
 	_showSvMarker:function(pos){
-		
+
 		j_svMarker.setPosition(pos);
 		j_svClickMarker.setVisible(false);
 
 		j_svMarker.setVisible(true);
 	},
-	
+
 	_preBasicLayer:null,
 	_outParams:null,
 	_layerParams:null,
@@ -368,7 +390,7 @@ NDragToggle = L.Class.extend({
 		if(!res){
 			return;
 		}
-		if(!this._roomLayer){	
+		if(!this._roomLayer){
 			var lyrOptions = L.Util.extend(
 				{},
 				res.layerParams,
@@ -393,6 +415,7 @@ NDragToggle = L.Class.extend({
 
 			this._pois = new Array();
 			this._pois.length = 0;
+			this._defautlpoi = res.initid;
 			for(var i = 0; i < res.poiParams.length; i++){
 				var tmpPoi = res.poiParams[i];
 				var tmpMarker = new JCameraMarker(new L.Loc(tmpPoi.x, tmpPoi.y),{
@@ -410,23 +433,25 @@ NDragToggle = L.Class.extend({
 						flash.callPano(pano);
 					};
 				}(tmpPoi.pano));
-				
+
 				this._pois.push(tmpMarker);
 			}
 			this._map.addOverlays(this._pois);
 			this._toggleContainer.style.display = "none";
 			// this._map.addControl(new L.Controls.Position());
 			if(basetag)
-				j_svMarker.setPosition(new L.Loc(this._pois["0"].getPosition().x,this._pois["0"].getPosition().y));
+				j_svMarker.setPosition(new L.Loc(this._pois[this._defautlpoi].getPosition().x,this._pois[this._defautlpoi].getPosition().y));
 		}
-		
-		showSWFSV(res.poiParams[0].pano);
-		
+		if(basetag)
+			showSWFSV(res.poiParams[this._defautlpoi].pano);
+		else
+			showSWFSV(res.poiParams[id].pano);
+
 		document.getElementById("controliconquit2d").style.display = "none";
 		document.getElementById("controliconquit").style.display = "";
 		j_setShiNeiPoisVisible(false);
 	},
-	
+
 	unsetRoomPano:function(){
 		j_setShiNeiPoisVisible(true);
 		if(this._pois){
@@ -435,7 +460,7 @@ NDragToggle = L.Class.extend({
 			this._pois = null;
 		}
 		if(this._roomLayer && this._preBasicLayer){
-			
+
 			this._map.setBasicLayer(this._preBasicLayer);
 			this._roomLayer.isBasicLayer = false;
 			this._map.removeLayer(this._roomLayer);
@@ -457,7 +482,7 @@ NDragToggle = L.Class.extend({
 		document.getElementById("controliconquit2d").style.display = "";
 		document.getElementById("controliconquit").style.display = "none";
 	},
-	
+
 	update:function (forceTag){
 		this._maxSize = new L.Loc(this.parentPanel.clientWidth - 2, this.parentPanel.clientHeight -2);
         this._parentPanelPos = new L.Loc(this.parentPanel.offsetLeft, this.parentPanel.offsetTop);

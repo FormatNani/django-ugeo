@@ -9,7 +9,7 @@ debug_name = True
 if __name__ == "__main__":
     ds_pano = "pg:dbname='topcon' host='127.0.0.1' port='5432' user='postgres' password='postgres'"
     # ds_pano = "sqlite3:../data/topcon2.db"
-    ips_file = "../data/posed_lb_ _4pics"
+    ips_file = "../data/sourcedata/topcon-streetpano-20140824/posed_lb_ _4pics"
     srid = 900913
     xflip = True
 

@@ -164,11 +164,15 @@ def panoInfo2(request, lon, lat):
         point = fromstr('POINT(%s %s)'%(point.x, point.y), srid=srid)
     else:
         point = fromstr('POINT(%s %s)'%(lon, lat), srid=srid)
-    pano = getNearPano(point, near)
-    info = getPanoInfo(pano)
-    neighbours = getNeighbours(pano, distance)
-    frees = getFreePanos(pano, 0, buf)
-    pois = getPOIs(pano, buf)
+    panonear = None
+    it = 1
+    while panonear is None:
+        panonear = getNearPano(point, near=near*it)
+        it = it + 1
+    info = getPanoInfo(panonear)
+    neighbours = getNeighbours(panonear, distance)
+    frees = getFreePanos(panonear, 0, buf)
+    pois = getPOIs(panonear, buf)
     return render(request, 'panorama/pano.xml',
                     {
                         'pano':info,

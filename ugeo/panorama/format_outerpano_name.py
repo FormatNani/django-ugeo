@@ -14,7 +14,7 @@ def read_panoname_from_line(line):
   return name
 
 ds_pano = "sqlite3:../data/topcon.db"
-ips_file = "/Users/sw/360云盘/拓普康项目/data/sroucedata/topcon-streetpano-20140824/posed_lb_ _4pics"
+ips_file = "../data/sourcedata/topcon-streetpano-20140824/posed_lb_ _4pics"
 
 con = sqlite3.connect(ds_pano[8:])
 con.enable_load_extension(True)

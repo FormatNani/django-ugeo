@@ -27,5 +27,5 @@ def main(path):
                 print("%s 处理完成" % filename)
 
 if __name__ == "__main__":
-    path = "/Users/sw/项目/拓普康项目/data/sroucedata/topcon-interpano-201408"
+    path = "../data/sourcedata/topcon-interpano-201408/temp"
     main(path)
