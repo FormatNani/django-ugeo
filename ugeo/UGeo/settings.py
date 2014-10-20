@@ -24,7 +24,16 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.chinamap.me',
+    '.chinamap.me.',
+    '.topcon.com.cn',
+    '.topcon.com.cn.',
+    '.sigm.com.cn',
+    '.sigm.com.cn.',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -101,6 +110,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "panorama/static"),
+    os.path.join(BASE_DIR, "leaflet/static"),
+    os.path.join(BASE_DIR, "topcon/static"),
+)
+
+# STATIC_ROOT = "/usr/local/var/www/ugeo/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 LEAFLET_CONFIG = {
     'PLUGINS': {

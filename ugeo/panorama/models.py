@@ -52,6 +52,7 @@ class PanoPoiData(models.Model):
 class PanoFreeData(models.Model):
   name = models.CharField(max_length=32, unique=True)
   title = models.CharField(max_length=32)
+  domain = models.CharField(max_length=32)
   geom = models.PointField(srid=PANO_CONFIG["srid"], dim=2)
   altitude = models.DecimalField(**decimal_kwargs)
   attitude_x = models.DecimalField(**decimal_kwargs)

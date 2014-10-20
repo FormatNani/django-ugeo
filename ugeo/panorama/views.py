@@ -15,6 +15,18 @@ from libpano import *
 import cStringIO
 
 ##### functions #####
+
+def enum(*sequential, **named):
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    return type('Enum', (), enums)
+
+PANO_TYPES = enum('STREET_PANO', 'FREE_PANO')
+
+def getPanoType(pano_name):
+    if pano_name.startswith('innerpano_'):
+        return PANO_TYPES.FREE_PANO
+    return PANO_TYPES.STREET_PANO
+
 def getNeighbours(pano, distance = 2.0, minDistanceBetweenPanos=3.0):
     neightour_names = []
     # qs = PanoLineData.objects.filter(geom__touches=pano.geom)
@@ -38,46 +50,65 @@ def getNeighbours(pano, distance = 2.0, minDistanceBetweenPanos=3.0):
             neighbours.append(neighbour)
     return neighbours
 
-def getFreePanos(pano0, tag = 0, buf = 50.0):
+def getFreePanos(pano0, pano_type, buf = 50.0):
     frees = []
     qs = PanoFreeData.objects.filter(geom__distance_lt=(pano0.geom, D(m=buf)))
-    for pano in qs:
-        if pano.name == pano0.name:
-            continue
-        free = DotDict()
-        free.name = pano.name
-        free.title = pano.title
-        free.tag = tag
-        free.exid = int(pano.name[10:])
-        free.lon = pano.geom.x
-        free.lat = pano.geom.y
-        free.alt = pano.altitude
-        free.direction = getDirection(pano)
-        # # get near streetview pano
-        # point = fromstr('POINT(%s %s)'%(free.lon, free.lat), srid=PANO_CONFIG["srid"])
-        # panonear = None
-        # it = 1
-        # while panonear is None:
-        #     panonear = getNearPano(point, near=buf*it)
-        #     it = it + 1
-        # free.pano = panonear.name
-        free.pano = free.name
-        frees.append(free)
+    if pano_type is PANO_TYPES.FREE_PANO:
+        qs = qs.filter(domain=(pano0.domain))
+        for pano in qs:
+            if pano.name == pano0.name:
+                continue
+            free = DotDict()
+            free.name = pano.name
+            free.title = pano.title
+            free.tag = 1
+            free.exid = int(pano.name[10:])
+            free.lon = pano.geom.x
+            free.lat = pano.geom.y
+            free.alt = pano.altitude
+            free.direction = getDirection(pano)
+            free.pano = free.name
+            frees.append(free)
+    else:
+        domains = []
+        for pano in qs:
+            if pano.domain in domains:
+                continue
+            # hard code for good choice
+            if pano.domain == u'SIGM园区A座':
+                pano = get_object_or_404(PanoFreeData, name='innerpano_000010')
+            elif pano.domain == u'SIGM园区B座':
+                pano = get_object_or_404(PanoFreeData, name='innerpano_000003')
+            elif pano.domain == u'SIGM园区D座':
+                pano = get_object_or_404(PanoFreeData, name='innerpano_000006')
+
+            domains.append(pano.domain)
+            free = DotDict()
+            free.name = pano.name
+            free.title = pano.domain
+            free.tag = 0
+            free.exid = int(pano.name[10:])
+            free.lon = pano.geom.x
+            free.lat = pano.geom.y
+            free.alt = pano.altitude
+            free.direction = getDirection(pano)
+            free.pano = free.name
+            frees.append(free)
     return frees
 
 def getPOIs(pano0, buf = 20.0):
     pois = []
     qs = PanoPoiData.objects.filter(geom__distance_lt=(pano0.geom, D(m=buf)))
-    for pano in qs:
+    for apoi in qs:
         poi = DotDict()
-        poi.name = pano.name
-        poi.exid = pano.exid
+        poi.name = apoi.name
+        poi.exid = apoi.exid
         poi.tag = 1
-        poi.lon = pano.geom.x
-        poi.lat = pano.geom.y
-        poi.alt = pano.altitude
+        poi.lon = apoi.geom.x
+        poi.lat = apoi.geom.y
+        poi.alt = apoi.altitude
         # get near streetview pano
-        point = fromstr('POINT(%s %s)'%(poi.lon, poi.lat), srid=PANO_CONFIG["srid"])
+        point = fromstr('POINT(%s %s)'%(apoi.lon, apoi.lat), srid=PANO_CONFIG["srid"])
         panonear = None
         it = 1
         while panonear is None:
@@ -125,19 +156,19 @@ def panoInfo(request, pano_name):
         buf = 50.0
         distance = 2.0
         # isFree = 0
-    if pano_name.startswith('innerpano_'):
+    pano_type = getPanoType(pano_name)
+    if pano_type is PANO_TYPES.FREE_PANO:
         pano = get_object_or_404(PanoFreeData, name=pano_name)
-    else:
-        pano = get_object_or_404(PanoPointData, name=pano_name)
-    info = getPanoInfo(pano)
-    if pano_name.startswith('innerpano_'):
+        info = getPanoInfo(pano)
         neighbours = []
         pois = []
-        frees = getFreePanos(pano, 1, buf)
+        frees = getFreePanos(pano, pano_type, buf)
     else:
+        pano = get_object_or_404(PanoPointData, name=pano_name)
+        info = getPanoInfo(pano)
         neighbours = getNeighbours(pano, distance)
         pois = getPOIs(pano, buf)
-        frees = getFreePanos(pano, 0, buf)
+        frees = getFreePanos(pano, pano_type, buf)
     return render(request, 'panorama/pano.xml',
                     {
                         'pano':info,
@@ -171,7 +202,7 @@ def panoInfo2(request, lon, lat):
         it = it + 1
     info = getPanoInfo(panonear)
     neighbours = getNeighbours(panonear, distance)
-    frees = getFreePanos(panonear, 0, buf)
+    frees = getFreePanos(panonear, PANO_TYPES.STREET_PANO, buf)
     pois = getPOIs(panonear, buf)
     return render(request, 'panorama/pano.xml',
                     {
