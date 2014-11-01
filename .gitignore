@@ -1,4 +1,5 @@
-ugeo/data/*
+ugeo/data
+ugeo/static
 tests
 build
 ugeo.egg-info
